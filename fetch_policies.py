@@ -650,6 +650,87 @@ def scrape_sigungu(existing_data):
 
     return results
 
+# ── 유관기관 홈페이지 게시판 (partner_sites.json) ────────────
+# 유관기관 탭에 있는 130개 기관 중, 홈페이지가 실제 "공고 목록" 구조라
+# 범용 크롤링이 통하는 곳만 골라 partner_sites.json에 정리해뒀다.
+# (온통청년/경기청년포털/경기도일자리재단처럼 이미 전용 경로로 수집 중인
+# 곳은 중복이라 제외)
+def scrape_partner_orgs(existing_data):
+    if not BS4_OK:
+        print("  beautifulsoup4 없어 유관기관 크롤링 스킵")
+        return []
+
+    try:
+        with open("partner_sites.json", "r", encoding="utf-8-sig") as f:
+            sites = json.load(f)
+    except Exception as e:
+        print(f"  partner_sites.json 읽기 오류: {e}")
+        return []
+
+    existing_links = {d.get("링크","") for d in existing_data if d.get("링크")}
+    existing_names = {d.get("사업명","") for d in existing_data}
+    YOUTH_KW = ["청년","청소년지원","청년지원","청년정책","청년취업","청년주거","청년창업"]
+    # 게시판이 아니라 메뉴/소개 링크인데 우연히 잡히는 것들 (실제 공고가 아님)
+    NAV_SUFFIX = ["소개","안내서","안내","연계망","바로가기","페이지","주요 사이트","알림","사이트","(새 창)","새 창)"]
+    candidates = []
+    seen_org_titles = set()
+
+    for site in sites:
+        시군_raw = site.get("시군", "")
+        시군 = "경기도" if 시군_raw == "중앙/경기도" else 시군_raw
+        기관명 = site.get("기관명", "")
+        url = site["url"]
+        try:
+            try:
+                r = requests.get(url, headers=HEADERS, timeout=10)
+            except requests.exceptions.SSLError:
+                r = requests.get(url, headers=HEADERS, timeout=10, verify=False)
+            r.encoding = r.apparent_encoding or "utf-8"
+            soup = BeautifulSoup(r.text, "html.parser")
+            rows = []
+            for sel in [".bdList li","table tr",".board-list tr",".list-item","li"]:
+                rows = soup.select(sel)
+                if len(rows) > 2: break
+
+            for row in rows:
+                link_el = row.select_one("a")
+                if not link_el: continue
+                title = link_el.get_text(strip=True)
+                if not title or len(title) < 6: continue
+                if not any(kw in title for kw in YOUTH_KW): continue
+                if any(sfx in title for sfx in NAV_SUFFIX): continue
+                href = link_el.get("href","")
+                full_link = (href if href.startswith("http")
+                             else f"https://{url.split('/')[2]}{href}" if href.startswith("/")
+                             else url)
+                if full_link in existing_links: continue
+                if any(title[:8] in name for name in existing_names if len(name) > 4):
+                    continue
+                if (기관명, title) in seen_org_titles: continue
+                seen_org_titles.add((기관명, title))
+                candidates.append({
+                    "시군":시군,"분야":"기타","사업명":title,
+                    "주요내용":"","모집시기":"","모집상태":"모집중",
+                    "신청방법":"","운영기관":기관명,"문의처":"",
+                    "링크":full_link,"링크_모집":full_link,"링크_전년도":"",
+                    "출처":"유관기관크롤링","갱신일":TODAY.strftime("%Y-%m-%d"),
+                })
+                existing_links.add(full_link)
+        except Exception as e:
+            print(f"  ⚠️ [{기관명}] {type(e).__name__}")
+        time.sleep(0.3)
+
+    # 서로 다른 기관에서 완전히 같은 제목이 나오면 전국 공용 위젯/배너일 가능성이
+    # 높아 걸러낸다 (기관별 자체 공고가 아님).
+    title_orgs = {}
+    for c in candidates:
+        title_orgs.setdefault(c["사업명"], set()).add(c["운영기관"])
+    results = [c for c in candidates if len(title_orgs[c["사업명"]]) == 1]
+    for c in results:
+        print(f"  🆕 [{c['운영기관']}] {c['사업명'][:30]}")
+
+    return results
+
 # ── 네이버 뉴스 RSS ──────────────────────────────────────────
 def search_naver_news(existing_data):
     existing_links = {d.get("링크","") for d in existing_data if d.get("링크")}
@@ -820,6 +901,9 @@ def main():
     print("\n31개 시군 게시판...")
     sigungu_new = scrape_sigungu(updated)
     add_new(sigungu_new, "시군게시판")
+
+    print("\n유관기관 홈페이지...")
+    add_new(scrape_partner_orgs(updated), "유관기관크롤링")
 
     print("\n네이버 뉴스 RSS...")
     add_new(search_naver_news(updated), "네이버뉴스")
