@@ -650,6 +650,61 @@ def scrape_sigungu(existing_data):
 
     return results
 
+# ── 마이홈 (LH 공공주택 청약/모집공고) ──────────────────────
+# 검색 페이지 자체는 JS로 렌더링되지만, 실제 목록은 JSON API
+# (selectRsdtRcritNtcList.do)를 POST로 호출해서 받아온다.
+# srchbrtcCode=41 이 경기도. resultCnt는 필터와 무관하게 항상 큰 값이
+# 찍히는 버그가 있어 신뢰하지 않고, 실제 resultList 길이만 사용한다.
+MYHOME_STATUS_MAP = {"모집중": "모집중", "모집예정": "모집예정", "마감": "마감", "접수중": "모집중"}
+
+def scrape_myhome():
+    results = []
+    try:
+        s = requests.Session()
+        s.headers.update(HEADERS)
+        view_url = "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do"
+        list_url = "https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcList.do"
+        s.get(view_url, timeout=15)
+        payload = {
+            "pageIndex": 1, "pageUnit": 200, "srchbrtcCode": "41", "srchsignguCode": "",
+            "searchTyId": "", "srchSuplyTy": "", "srchHouseTy": "",
+            "srchSuplyPrvuseAr": "", "srchBassMtRntchrg": "", "srchPrgrStts": "",
+            "srchPblancNm": "", "srchRcritPblancDeYearMtBegin": "", "srchRcritPblancDeYearMtEnd": "",
+        }
+        r = s.post(list_url, data=payload, timeout=20, headers={
+            "X-Requested-With": "XMLHttpRequest", "Referer": view_url,
+        })
+        items = r.json().get("resultList", [])
+        for it in items:
+            title = it.get("pblancNm", "")
+            if not title:
+                continue
+            city = _extract_gg_city(title, it.get("suplyInsttNm", ""), "")
+            공고일 = (it.get("rcritPblancDe") or "").strip()
+            발표일 = (it.get("przwnerPresnatnDe") or "").strip()
+            시기 = ""
+            if 공고일:
+                시기 = f"{공고일[:4]}.{공고일[4:6]}.{공고일[6:]} 공고"
+                if 발표일:
+                    시기 += f" (예비입주자 발표 {발표일[:4]}.{발표일[4:6]}.{발표일[6:]})"
+            상태 = MYHOME_STATUS_MAP.get(it.get("prgrStts", "")) or get_status(시기)
+            주요내용 = " ".join(x for x in [it.get("guidanceCn"), it.get("etcCn")] if x)[:500]
+            link = it.get("url", "")
+
+            results.append({
+                "시군": city, "분야": "주거",
+                "사업명": title, "주요내용": 주요내용,
+                "모집시기": 시기, "모집상태": 상태,
+                "신청방법": "", "운영기관": it.get("suplyInsttNm", "") or "마이홈",
+                "문의처": it.get("refrnc", ""),
+                "링크": link, "링크_모집": link, "링크_전년도": "",
+                "출처": "마이홈", "갱신일": TODAY.strftime("%Y-%m-%d"),
+            })
+    except Exception as e:
+        print(f"  마이홈 오류: {e}")
+    print(f"  마이홈: {len(results)}건")
+    return results
+
 # ── 유관기관 홈페이지 게시판 (partner_sites.json) ────────────
 # 유관기관 탭에 있는 130개 기관 중, 홈페이지가 실제 "공고 목록" 구조라
 # 범용 크롤링이 통하는 곳만 골라 partner_sites.json에 정리해뒀다.
@@ -894,6 +949,9 @@ def main():
 
     print("\n경기복지포털...")
     add_new(scrape_gg24(), "경기복지포털")
+
+    print("\n마이홈...")
+    add_new(scrape_myhome(), "마이홈")
 
     print("\n경기청년포털...")
     add_new(scrape_gyeonggi_youth(updated), "경기청년포털")

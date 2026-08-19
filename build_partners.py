@@ -76,7 +76,28 @@ def build_partners():
             partners.append(item)
             last = item
         print(f'  {tab}: {sum(1 for p in partners if p["시군"]==시군)}건')
-    return partners
+    partners.extend(MANUAL_ADDITIONS)
+
+    seen = set()
+    deduped = []
+    for p in partners:
+        key = (p['기관명'], p['웹주소'], p['시군'])
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(p)
+    return deduped
+
+# 원본 시트에는 없지만 직접 추가 요청받은 기관들.
+# (build_partners.py를 다시 돌려도 유지되도록 시트 데이터가 아니라 코드에 둠)
+MANUAL_ADDITIONS = [
+    {
+        '시군': '중앙/경기도', '구분': '주거', '분류': '',
+        '기관명': '마이홈',
+        '웹주소': 'https://www.myhome.go.kr/hws/portal/sch/selectRsdtRcritNtcView.do',
+        '담당자': '', '메일주소': '', '전화번호': '', '비고': '',
+    },
+]
 
 # 청년센터현황 시트에는 링크 컬럼이 없어서 직접 조사한 값을 수동으로 관리.
 # (build_partners.py를 다시 돌려도 유지되도록 시트 데이터가 아니라 코드에 둠)
