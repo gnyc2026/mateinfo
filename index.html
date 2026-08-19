@@ -280,6 +280,51 @@ html { overflow-x: hidden; }
 .center-table tbody tr:hover td { background: var(--accent-light); }
 .center-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; background: #F3F4F6; color: #374151; border: 1px solid #E5E7EB; }
 
+/* ── 지역자원표 아코디언 (청년센터현황) ── */
+.region-toggle-row td { cursor: pointer; }
+.region-toggle-row:hover td { background: var(--accent-light); }
+.region-expand-icon { display: inline-block; transition: transform .15s; color: var(--text3); margin-right: 4px; }
+.region-expand-icon.open { transform: rotate(90deg); }
+.region-detail-row { display: none; }
+.region-detail-row.open { display: table-row; }
+.region-detail-row td { background: var(--bg); padding: 0; }
+.region-detail { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.region-detail-narrative { font-size: 13px; line-height: 1.7; color: var(--text2); background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.region-detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.region-detail-item { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.region-detail-item-label { font-size: 11px; color: var(--text3); font-weight: 700; margin-bottom: 4px; }
+.region-detail-item-value { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+
+/* ── 기본안내 탭 ── */
+.guide-field-nav { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px 20px; background: var(--white); border-bottom: 1px solid var(--border); }
+.guide-section { padding: 20px; max-width: 1400px; margin: 0 auto; }
+.guide-section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.guide-section-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.guide-section-title { font-size: 15px; font-weight: 700; }
+.guide-section-sub { font-size: 12px; color: var(--text3); margin: -8px 0 16px 32px; }
+
+.situation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.situation-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.situation-title { font-size: 14px; font-weight: 700; }
+.org-badge-list { display: flex; flex-direction: column; gap: 5px; }
+.org-badge-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; }
+.org-badge { flex-shrink: 0; display: inline-block; padding: 1px 6px; border-radius: 5px; font-size: 10px; font-weight: 700; }
+.org-badge.org-중 { background: #FFF1F2; color: #BE123C; }
+.org-badge.org-광 { background: #EFF6FF; color: #1E40AF; }
+.org-badge.org-기 { background: #F3F4F6; color: #374151; }
+.org-badge.org-기타 { background: #F5F3FF; color: #6D28D9; }
+.qa-list { list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--text2); }
+.qa-list li::before { content: "☐ "; color: var(--text3); }
+.situation-branch { font-size: 12px; color: var(--accent); background: var(--accent-light); border-radius: 8px; padding: 8px 10px; line-height: 1.5; }
+.situation-warn { font-size: 12px; color: var(--check); background: var(--check-bg); border: 1px solid var(--check-bd); border-radius: 8px; padding: 8px 10px; line-height: 1.5; }
+
+.pcard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.pcard { background: var(--white); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px; cursor: pointer; transition: box-shadow .15s, transform .1s; display: flex; flex-direction: column; gap: 8px; }
+.pcard:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-1px); }
+.pcard-title { font-size: 13.5px; font-weight: 700; }
+.pcard-row { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.pcard-row b { color: var(--text3); font-weight: 600; }
+
 /* ── 필터 토글 버튼 ── */
 .filter-toggle-btn {
   display: none;
@@ -384,6 +429,7 @@ html { overflow-x: hidden; }
 
 <nav class="main-tabs">
   <button class="main-tab active" data-tab="policy" onclick="switchTab('policy')">📋 청년정책</button>
+  <button class="main-tab" data-tab="guide" onclick="switchTab('guide')">🧭 기본안내</button>
   <button class="main-tab" data-tab="partners" onclick="switchTab('partners')">🏢 유관기관</button>
   <button class="main-tab" data-tab="centers" onclick="switchTab('centers')">🏛️ 청년센터현황</button>
 </nav>
@@ -451,6 +497,30 @@ html { overflow-x: hidden; }
 </main>
 
 </div><!-- /tab-policy -->
+
+<div id="tab-guide" class="tab-panel">
+  <div class="filterbar">
+    <div class="filter-row">
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="guide-search" placeholder="정책명으로 검색..." autocomplete="off">
+      </div>
+    </div>
+  </div>
+  <nav class="guide-field-nav" id="guide-field-nav"></nav>
+  <main class="main" style="padding:0;max-width:none;">
+    <div class="guide-section">
+      <div class="guide-section-head"><span class="guide-section-num">1</span><span class="guide-section-title">기본 안내 — 상담 전 확인</span></div>
+      <div class="guide-section-sub">참여자 상황에 맞는 분야를 확인하고, 확인 질문으로 대표 정책을 좁혀보세요.</div>
+      <div class="situation-grid" id="situation-grid"><div class="loading">데이터를 불러오는 중...</div></div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-section-head"><span class="guide-section-num">2</span><span class="guide-section-title">대표 정책 카드 — 안내할 정책 확인</span></div>
+      <div class="guide-section-sub">카드를 클릭하면 상세 정보와 함께, 청년정책 탭에서 실제 공고를 바로 검색할 수 있어요.</div>
+      <div class="pcard-grid" id="pcard-grid"></div>
+    </div>
+  </main>
+</div>
 
 <div id="tab-partners" class="tab-panel">
   <div class="filterbar">
@@ -571,6 +641,7 @@ html { overflow-x: hidden; }
       <button class="btn btn-secondary" id="btn-copy" onclick="copyContact()">📋 문의처 복사</button>
       <button class="btn btn-secondary" id="btn-prev" onclick="openPrevLink()" style="display:none">📂 전년도 공고</button>
       <button class="btn btn-secondary" id="btn-search" onclick="openSearch()" style="display:none">🔍 공고 검색</button>
+      <button class="btn btn-primary" id="btn-pcard-search" onclick="searchPcardInPolicyTab()" style="display:none">📋 청년정책 탭에서 검색</button>
       <button class="btn btn-primary" id="btn-link" onclick="openLink()">🔗 신청 바로가기</button>
     </div>
   </div>
@@ -581,6 +652,7 @@ let DATA = [];
 const ALL_STATUSES = ['확인필요','모집중','모집예정','미정','마감'];
 let state = { statuses: new Set(['모집중']), city: 'all', field: 'all', query: '', allStatus: false };
 let currentItem = null;
+let currentPcard = null;
 
 fetch('data.json')
   .then(r => r.json())
@@ -603,7 +675,137 @@ function switchTab(id) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-'+id));
   if (id === 'partners') loadPartners();
   if (id === 'centers') loadCenters();
+  if (id === 'guide') loadGuide();
 }
+
+// ── 기본안내 탭 ──
+let GUIDE = null, PCARDS = null;
+let guideState = { field: null, query: '' };
+const GUIDE_FIELDS = ['일자리','주거','교육·직업훈련','금융·복지·문화','참여·기반'];
+const ORG_LABEL = {'중':'중앙정부','광':'경기도','기':'기초시군'};
+
+function loadGuide() {
+  if (GUIDE !== null) return;
+  Promise.all([
+    fetch('basic_guide.json').then(r => r.json()),
+    fetch('policy_cards.json').then(r => r.json())
+  ]).then(([guide, pcards]) => {
+    GUIDE = guide; PCARDS = pcards;
+    guideState.field = GUIDE_FIELDS[0];
+    renderGuideNav();
+    renderSituations();
+    renderPcards();
+  }).catch(() => {
+    document.getElementById('situation-grid').innerHTML = '<div class="empty"><p>데이터를 불러오지 못했습니다.</p></div>';
+  });
+}
+
+function renderGuideNav() {
+  document.getElementById('guide-field-nav').innerHTML = GUIDE_FIELDS.map(f =>
+    `<div class="chip ${f===guideState.field?'active':''}" onclick="setGuideField('${f}', this)">${f}</div>`
+  ).join('');
+}
+function setGuideField(field, el) {
+  guideState.field = field;
+  document.querySelectorAll('#guide-field-nav .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderSituations();
+  renderPcards();
+}
+
+function _parseOrgItem(text) {
+  const m = text.match(/^\[([^\]]+)\]\s*(.+)$/);
+  return m ? {code: m[1], name: m[2]} : {code: '기타', name: text};
+}
+function _orgBadgeClass(code) {
+  if (!code) return 'org-기타';
+  if (code.includes('중')) return 'org-중';
+  if (code.includes('광')) return 'org-광';
+  if (code.includes('기')) return 'org-기';
+  return 'org-기타';
+}
+const _FC = (f) => (f||'').replace(/[ㆍ·]/g,'').replace(/\s/g,'');
+
+function renderSituations() {
+  if (!GUIDE) return;
+  let items = GUIDE.filter(g => g.분야 === guideState.field);
+  if (guideState.query) {
+    const q = guideState.query.toLowerCase();
+    items = items.filter(g => g.상황.toLowerCase().includes(q) || g.대표정책.some(p => p.toLowerCase().includes(q)));
+  }
+  document.getElementById('situation-grid').innerHTML = items.map(g => {
+    const policies = g.대표정책.map(p => {
+      const {code, name} = _parseOrgItem(p);
+      return `<div class="org-badge-item"><span class="org-badge ${_orgBadgeClass(code)}">${code}</span><span>${name}</span></div>`;
+    }).join('');
+    const questions = g.확인질문.length ? `<ul class="qa-list">${g.확인질문.map(q => `<li>${q}</li>`).join('')}</ul>` : '';
+    const branch = g.분기안내 ? `<div class="situation-branch">→ ${g.분기안내}</div>` : '';
+    const warn = g.주의사항 ? `<div class="situation-warn">⚠ ${g.주의사항}</div>` : '';
+    return `<div class="situation-card">
+      <div class="situation-title">${g.상황}</div>
+      <div class="org-badge-list">${policies}</div>
+      ${questions}
+      ${branch}
+      ${warn}
+    </div>`;
+  }).join('') || '<div class="empty"><p>해당하는 안내가 없습니다.</p></div>';
+}
+
+function renderPcards() {
+  if (!PCARDS) return;
+  let items = PCARDS.filter(p => p.분야 === guideState.field);
+  if (guideState.query) {
+    const q = guideState.query.toLowerCase();
+    items = items.filter(p => p.정책명.toLowerCase().includes(q));
+  }
+  document.getElementById('pcard-grid').innerHTML = items.map(p => {
+    const idx = PCARDS.indexOf(p);
+    return `<div class="pcard" onclick="openPcardModal(${idx})">
+      <div class="card-badges"><span class="org-badge ${_orgBadgeClass(p.주관)}">${p.주관}</span></div>
+      <div class="pcard-title">${p.정책명}</div>
+      <div class="pcard-row"><b>대상</b> ${p.대상||'-'}</div>
+      <div class="pcard-row"><b>확인처</b> ${p.확인처||'-'}</div>
+    </div>`;
+  }).join('') || '<div class="empty"><p>해당하는 정책이 없습니다.</p></div>';
+}
+
+function openPcardModal(idx) {
+  const p = PCARDS[idx]; currentPcard = p; currentItem = null;
+  document.getElementById('modal-badges').innerHTML =
+    `<span class="badge ${_orgBadgeClass(p.주관)==='org-중'?'badge-중앙정부':_orgBadgeClass(p.주관)==='org-광'?'badge-경기도':'badge-city'}">${p.주관} · ${ORG_LABEL[p.주관]||'복합 주관'}</span>
+     <span class="badge badge-field-${_FC(p.분야)}">${p.분야||''}</span>`;
+  document.getElementById('modal-title').textContent = p.정책명;
+  document.getElementById('modal-content').textContent = p.기타 || '-';
+  document.getElementById('modal-info').innerHTML = `
+    <div class="modal-item"><div class="modal-item-label">👤 대상</div><div class="modal-item-value">${p.대상||'-'}</div></div>
+    <div class="modal-item"><div class="modal-item-label">✅ 요건</div><div class="modal-item-value">${p.요건||'-'}</div></div>
+    <div class="modal-item"><div class="modal-item-label">🎁 지원내용</div><div class="modal-item-value">${p.지원내용||'-'}</div></div>
+    <div class="modal-item"><div class="modal-item-label">📞 확인처</div><div class="modal-item-value">${p.확인처||'-'}</div></div>`;
+  document.getElementById('btn-link').style.display = 'none';
+  document.getElementById('btn-prev').style.display = 'none';
+  document.getElementById('btn-search').style.display = 'none';
+  document.getElementById('btn-copy').style.display = 'none';
+  document.getElementById('btn-pcard-search').style.display = '';
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function searchPcardInPolicyTab() {
+  if (!currentPcard) return;
+  const name = currentPcard.정책명;
+  closeModal();
+  switchTab('policy');
+  document.getElementById('search').value = name;
+  state.query = name;
+  // 상태와 무관하게 검색 결과를 바로 볼 수 있도록 상태 필터를 전체로 초기화
+  setAllStatus(document.getElementById('chip-all-status'));
+}
+
+document.getElementById('guide-search').addEventListener('input', e => {
+  guideState.query = e.target.value.trim();
+  renderSituations();
+  renderPcards();
+});
 
 // ── 유관기관 탭 ──
 let PARTNERS = null;
@@ -691,24 +893,46 @@ document.getElementById('partner-search').addEventListener('input', e => { partn
 
 // ── 청년센터현황 탭 ──
 let CENTERS = null;
+let REGION_RES = null;
 function loadCenters() {
   if (CENTERS !== null) return;
-  fetch('centers.json')
-    .then(r => r.json())
-    .then(json => { CENTERS = json; renderCenters(); })
-    .catch(() => {
-      document.getElementById('center-table-wrap').innerHTML = '<div class="empty"><p>청년센터현황 데이터를 불러오지 못했습니다.</p></div>';
-    });
+  Promise.all([
+    fetch('centers.json').then(r => r.json()),
+    fetch('region_resources.json').then(r => r.json()).catch(() => [])
+  ]).then(([centers, regions]) => {
+    CENTERS = centers; REGION_RES = regions;
+    renderCenters();
+  }).catch(() => {
+    document.getElementById('center-table-wrap').innerHTML = '<div class="empty"><p>청년센터현황 데이터를 불러오지 못했습니다.</p></div>';
+  });
 }
+
+const REGION_FIELD_LABELS = [
+  ['청년센터_연락처','☎️ 청년센터·연락처'],
+  ['일자리_취업','💼 일자리·취업'],
+  ['일자리_창업','🚀 일자리·창업'],
+  ['주거','🏠 주거'],
+  ['교육_복지_문화','📚 교육·복지·문화'],
+  ['참여','🤝 참여'],
+  ['전문기관_연결','🔗 전문기관 연결'],
+  ['공식_확인경로','🌐 공식 확인경로'],
+];
 
 function renderCenters() {
   if (!CENTERS) return;
   document.getElementById('center-result-count').innerHTML = `<strong>${CENTERS.length}</strong>개 시군`;
-  const rows = CENTERS.map(c => {
+  const regionByCity = {};
+  (REGION_RES||[]).forEach(r => { regionByCity[r.시군] = r; });
+
+  const rows = CENTERS.map((c, i) => {
     const centerCell = c.링크
       ? `<a href="${c.링크}" target="_blank" style="color:var(--accent);font-weight:600;">${c.청년센터||'-'} ↗</a>`
       : (c.청년센터||'-');
-    return `<tr>
+    const region = regionByCity[c.시군];
+    const toggleCell = region
+      ? `<span class="region-expand-icon" id="region-icon-${i}">▶</span>지역자원표`
+      : '';
+    const mainRow = `<tr class="${region?'region-toggle-row':''}" ${region?`onclick="toggleRegionDetail(${i})"`:''}>
     <td><span class="center-badge">${c.시군}</span></td>
     <td>${c.권역||'-'}</td>
     <td class="wrap">${centerCell}</td>
@@ -716,16 +940,34 @@ function renderCenters() {
     <td>${c.청년인구비율 ? c.청년인구비율+'%' : '-'}</td>
     <td>${c.청년연령기준||'-'}</td>
     <td class="wrap">${c.청년공간||'-'}</td>
+    <td>${toggleCell}</td>
   </tr>`;
+    if (!region) return mainRow;
+    const items = REGION_FIELD_LABELS.map(([key,label]) =>
+      `<div class="region-detail-item"><div class="region-detail-item-label">${label}</div><div class="region-detail-item-value">${region[key]||'-'}</div></div>`
+    ).join('');
+    const narrative = region.특성설명 ? `<div class="region-detail-narrative">${region.특성설명}</div>` : '';
+    const detailRow = `<tr class="region-detail-row" id="region-detail-${i}">
+      <td colspan="8"><div class="region-detail">${narrative}<div class="region-detail-grid">${items}</div></div></td>
+    </tr>`;
+    return mainRow + detailRow;
   }).join('');
   document.getElementById('center-table-wrap').innerHTML = `
     <div class="table-wrap"><table class="center-table">
       <thead><tr>
         <th>시군</th><th>권역</th><th>청년센터</th>
-        <th>청년인구</th><th>청년인구비율</th><th>연령기준</th><th>청년공간</th>
+        <th>청년인구</th><th>청년인구비율</th><th>연령기준</th><th>청년공간</th><th>지역자원표</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table></div>`;
+}
+
+function toggleRegionDetail(i) {
+  const row = document.getElementById(`region-detail-${i}`);
+  const icon = document.getElementById(`region-icon-${i}`);
+  if (!row) return;
+  const open = row.classList.toggle('open');
+  icon.classList.toggle('open', open);
 }
 
 function buildCityChips() {
@@ -853,6 +1095,9 @@ function openModal(idx) {
   document.getElementById('btn-link').style.display   = activeLink ? '' : 'none';
   document.getElementById('btn-prev').style.display   = d.링크_전년도 ? '' : 'none';
   document.getElementById('btn-search').style.display = (st === '확인필요') ? '' : 'none';
+  document.getElementById('btn-copy').style.display = '';
+  document.getElementById('btn-pcard-search').style.display = 'none';
+  currentPcard = null;
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
