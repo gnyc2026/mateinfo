@@ -93,5 +93,265 @@
     "기관명": "구리시여성새로일하기센터",
     "시군": "구리시",
     "url": "https://www.guri.go.kr/happiness/contents.do?key=948"
+  },
+  {
+    "기관명": "북부 경기문화창조허브",
+    "시군": "중앙/경기도",
+    "url": "https://www.gcon.or.kr/gcon/bbs/B0000001/list.do?menuNo=200057"
+  },
+  {
+    "기관명": "한국여성벤처협회",
+    "시군": "중앙/경기도",
+    "url": "https://kovwa.or.kr/94"
+  },
+  {
+    "기관명": "경기도노동권익센터",
+    "시군": "중앙/경기도",
+    "url": "https://labor.gg.go.kr/board/notice/"
+  },
+  {
+    "기관명": "고양특례시",
+    "시군": "고양시",
+    "url": "https://www.goyang.go.kr/www/user/bbs/BD_selectBbsList.do?q_bbsCode=1030"
+  },
+  {
+    "기관명": "내일꿈제작소",
+    "시군": "고양시",
+    "url": "https://goyangjobcafe.kr/알림마당/공지사항/"
+  },
+  {
+    "기관명": "28청춘창업소",
+    "시군": "고양시",
+    "url": "https://www.gipa.or.kr/community/01_1.php"
+  },
+  {
+    "기관명": "고양고용복지플러스센터",
+    "시군": "고양시",
+    "url": "https://www.work.go.kr/goyang/main.do"
+  },
+  {
+    "기관명": "고양문화재단",
+    "시군": "고양시",
+    "url": "https://www.artgy.or.kr/CU/CU0101M.aspx"
+  },
+  {
+    "기관명": "고양시 노동권익센터",
+    "시군": "고양시",
+    "url": "http://gynodong.org/sub.asp?maincode=469&sub_sequence=485"
+  },
+  {
+    "기관명": "고양여성인력개발센터",
+    "시군": "고양시",
+    "url": "https://www.kycenter.or.kr/sub3/sub31.aspx"
+  },
+  {
+    "기관명": "고양시 사회적경제지원센터",
+    "시군": "고양시",
+    "url": "http://www.gyse.or.kr/bbs/board.php?bo_table=notice"
+  },
+  {
+    "기관명": "고양시 자원봉사센터",
+    "시군": "고양시",
+    "url": "https://www.gy1365.or.kr/commu/notice/notice/"
+  },
+  {
+    "기관명": "한국항공대학교 창업보육센터",
+    "시군": "고양시",
+    "url": "https://research.kau.ac.kr/info/info_011.php?code=s2101"
+  },
+  {
+    "기관명": "파주시청년공간GP1939",
+    "시군": "파주시",
+    "url": "https://www.paju.go.kr/youth/user/board/BD_board.list.do?bbsCd=9054"
+  },
+  {
+    "기관명": "파주고용복지플러스센터",
+    "시군": "파주시",
+    "url": "https://www.work.go.kr/paju/newsPlace/notice/noticeList.do?subNaviMenuCd=20200"
+  },
+  {
+    "기관명": "파주시문화재단",
+    "시군": "파주시",
+    "url": "https://www.pajucf.or.kr/community/notice.php"
+  },
+  {
+    "기관명": "파주시 창업캠퍼스",
+    "시군": "파주시",
+    "url": "https://pajugsc.kr/notice"
+  },
+  {
+    "기관명": "파주시 노동권익센터",
+    "시군": "파주시",
+    "url": "http://www.pjlabor.co.kr/?act=board&bbs_code=sub2_1"
+  },
+  {
+    "기관명": "동두천시 청년창업지원센터",
+    "시군": "동두천시",
+    "url": "https://www.ddcstartup.co.kr/notice/index.php"
+  },
+  {
+    "기관명": "동두천고용복지플러스센터",
+    "시군": "동두천시",
+    "url": "https://www.work.go.kr/dongducheon/newsPlace/notice/noticeList.do?subNaviMenuCd=20200"
+  },
+  {
+    "기관명": "동두천문화원",
+    "시군": "동두천시",
+    "url": "http://www.munhwawon.com/sboard/list.php?sbid=notice"
+  },
+  {
+    "기관명": "양주고용복지플러스센터",
+    "시군": "양주시",
+    "url": "https://www.work.go.kr/yangju/newsPlace/notice/noticeList.do?subNaviMenuCd=20200"
+  },
+  {
+    "기관명": "양주시정신건강복지센터",
+    "시군": "양주시",
+    "url": "https://www.yjgreenmind.com/sub.php?id=notice&menukey=25"
+  },
+  {
+    "기관명": "양주시 여성보육비전센터",
+    "시군": "양주시",
+    "url": "https://www.yangju.go.kr/vision/selectBbsNttList.do?bbsNo=111&key=1974"
+  },
+  {
+    "기관명": "양주시 사회적경제지원센터",
+    "시군": "양주시",
+    "url": "https://www.yangju.go.kr/secenter/selectBbsNttList.do?bbsNo=347&key=3145"
+  },
+  {
+    "기관명": "연천군 일자리센터",
+    "시군": "연천군",
+    "url": "https://www.yeoncheon.go.kr/www/selectBbsNttList.do?bbsNo=8&key=3386"
+  },
+  {
+    "기관명": "연천군정신건강복지센터",
+    "시군": "연천군",
+    "url": "https://yccmhc.or.kr/sub.php?id=notice&menukey=34"
+  },
+  {
+    "기관명": "연천문화원",
+    "시군": "연천군",
+    "url": "https://xn--z92b19qita13pqrn.kr/bbs/board.php?bo_table=0501"
+  },
+  {
+    "기관명": "의정부시 청년센터 청년공감터",
+    "시군": "의정부시",
+    "url": "https://www.uuli.or.kr/index.do?menu_id=00005064"
+  },
+  {
+    "기관명": "의정부고용복지플러스센터",
+    "시군": "의정부시",
+    "url": "https://www.work.go.kr/uijeongbu/newsPlace/notice/noticeList.do?subNaviMenuCd=20200"
+  },
+  {
+    "기관명": "의정부시정신건강복지센터",
+    "시군": "의정부시",
+    "url": "https://www.umind.or.kr/sub.php?menukey=20"
+  },
+  {
+    "기관명": "의정부문화재단",
+    "시군": "의정부시",
+    "url": "https://www.uac.or.kr/newuac/community/community_01.php"
+  },
+  {
+    "기관명": "의정부 1인 창조기업 지원센터(신한대)",
+    "시군": "의정부시",
+    "url": "https://www.shinhan.ac.kr/bbs/kr/197/artclList.do"
+  },
+  {
+    "기관명": "의정부시자원봉사센터",
+    "시군": "의정부시",
+    "url": "https://www.uibong4.net/bbs?table=mn06_01"
+  },
+  {
+    "기관명": "경기북부 여성창업성장센터",
+    "시군": "의정부시",
+    "url": "https://www.wbiz.or.kr/notice/notice.do"
+  },
+  {
+    "기관명": "포천시청년센터",
+    "시군": "포천시",
+    "url": "https://www.pocheon.go.kr/newsvision/selectBbsNttList.do?bbsNo=1990&key=10004"
+  },
+  {
+    "기관명": "포천고용복지플러스센터",
+    "시군": "포천시",
+    "url": "https://www.work.go.kr/pocheon/newsPlace/notice/noticeList.do?subNaviMenuCd=20200"
+  },
+  {
+    "기관명": "포천시정신건강복지센터",
+    "시군": "포천시",
+    "url": "https://pocheonmind.com/kor/news/notice.php"
+  },
+  {
+    "기관명": "포천문화재단",
+    "시군": "포천시",
+    "url": "https://www.pcfac.or.kr/sub07/sub01.php"
+  },
+  {
+    "기관명": "포천시종합자원봉사센터",
+    "시군": "포천시",
+    "url": "https://pcvc.kr/board/notice.asp"
+  },
+  {
+    "기관명": "가평군 청년공간 다온미래뜰",
+    "시군": "가평군",
+    "url": "https://www.gp.go.kr/portal/selectBbsNttList.do?bbsNo=150&key=501"
+  },
+  {
+    "기관명": "가평고용복지센터",
+    "시군": "가평군",
+    "url": "https://www.work.go.kr/gapyeong/newsPlace/notice/noticeList.do"
+  },
+  {
+    "기관명": "가평군정신건강복지센터",
+    "시군": "가평군",
+    "url": "https://www.gpmhc.com/sub.php?menukey=32&id=notice"
+  },
+  {
+    "기관명": "가평군자원봉사센터",
+    "시군": "가평군",
+    "url": "http://www.gpvc.org/board/notice.asp"
+  },
+  {
+    "기관명": "구리고용복지플러스센터",
+    "시군": "구리시",
+    "url": "https://www.work.go.kr/guri/newsPlace/notice/noticeList.do"
+  },
+  {
+    "기관명": "구리시정신건강복지센터",
+    "시군": "구리시",
+    "url": "https://www.gurimhc.or.kr/sub.php?menukey=23&id=notice"
+  },
+  {
+    "기관명": "구리시 공동체 사회적 경제지원센터",
+    "시군": "구리시",
+    "url": "https://www.guri.go.kr/gurimse/selectBbsNttList.do?bbsNo=581&key=2080"
+  },
+  {
+    "기관명": "남양주시 청년창업센터",
+    "시군": "남양주시",
+    "url": "https://www.nyj.go.kr/youth/www/37"
+  },
+  {
+    "기관명": "남양주고용복지플러스센터",
+    "시군": "남양주시",
+    "url": "https://www.work.go.kr/namyangju/newsPlace/notice/noticeList.do"
+  },
+  {
+    "기관명": "남양주시정신건강복지센터",
+    "시군": "남양주시",
+    "url": "https://www.ourmind.or.kr/sub.php?menukey=24&id=notice"
+  },
+  {
+    "기관명": "남양주문화재단",
+    "시군": "남양주시",
+    "url": "https://www.nyjcf.or.kr/www/23"
+  },
+  {
+    "기관명": "남양주 여성새로일하기센터",
+    "시군": "남양주시",
+    "url": "https://nyjsaeil.com/bbs/board.php?bo_table=0401"
   }
 ]
