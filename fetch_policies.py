@@ -23,9 +23,31 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from collections import Counter
 
+import ssl
 import requests
+from requests.adapters import HTTPAdapter
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# 일부 지자체/기관 사이트는 OpenSSL 3.x 기본 보안수준(SECLEVEL=2)이 거부하는
+# 구식 암호화 스위트만 지원해 SSLV3_ALERT_HANDSHAKE_FAILURE로 실패한다.
+# verify=False로는 해결되지 않는 별개의 문제라(인증서가 아니라 프로토콜
+# 협상 자체가 실패) SECLEVEL을 낮춘 전용 세션을 폴백으로 따로 둔다.
+_LEGACY_SSL_CTX = ssl.create_default_context()
+_LEGACY_SSL_CTX.set_ciphers("DEFAULT:@SECLEVEL=1")
+_LEGACY_SSL_CTX.check_hostname = False
+_LEGACY_SSL_CTX.verify_mode = ssl.CERT_NONE
+
+class _LegacyTLSAdapter(HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        kwargs["ssl_context"] = _LEGACY_SSL_CTX
+        return super().init_poolmanager(*args, **kwargs)
+    def proxy_manager_for(self, *args, **kwargs):
+        kwargs["ssl_context"] = _LEGACY_SSL_CTX
+        return super().proxy_manager_for(*args, **kwargs)
+
+_legacy_session = requests.Session()
+_legacy_session.mount("https://", _LegacyTLSAdapter())
 
 # Windows 콘솔의 cp949 기본 인코딩에서도 이모지/한글 출력이 깨지지 않도록 강제 UTF-8
 if hasattr(sys.stdout, "reconfigure"):
@@ -715,13 +737,28 @@ def _fetch_org_titles(url):
     try:
         r = requests.get(url, headers=HEADERS, timeout=10)
     except requests.exceptions.SSLError:
-        r = requests.get(url, headers=HEADERS, timeout=10, verify=False)
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=10, verify=False)
+        except requests.exceptions.SSLError:
+            # verify=False로도 안 되면 인증서가 아니라 프로토콜/암호화
+            # 스위트 협상 자체가 실패하는 것 (구식 서버) → 레거시 세션 재시도
+            r = _legacy_session.get(url, headers=HEADERS, timeout=10, verify=False)
     r.encoding = r.apparent_encoding or "utf-8"
     soup = BeautifulSoup(r.text, "html.parser")
+
+    # 게시판 전용 셀렉터는 문서 전체에서 찾는다 (게시판이 iframe 안에 있거나
+    # main/#content 밖에 있는 사이트가 많아, 여기서 범위를 좁히면 오히려
+    # 정상 동작하던 사이트가 깨진다).
     rows = []
-    for sel in [".bdList li","table tr",".board-list tr",".list-item","li"]:
+    for sel in [".bdList li","table tr",".board-list tr",".list-item"]:
         rows = soup.select(sel)
         if len(rows) > 2: break
+    else:
+        # 위 셀렉터로 못 찾았을 때만 최종 폴백으로 li를 쓰는데, 문서 전체에
+        # 걸면 상단/좌측 네비게이션 메뉴("본문 바로가기" 등)를 통째로
+        # 긁어오므로 이때만 본문 영역으로 범위를 좁힌다.
+        scope = soup.select_one("main, #container, #content") or soup
+        rows = scope.select("li")
 
     titles = []
     for row in rows:
@@ -729,6 +766,9 @@ def _fetch_org_titles(url):
         if not link_el: continue
         title = link_el.get_text(strip=True)
         if not title or len(title) < 6: continue
+        # href="#view" 처럼 JS로 상세보기를 여는 진짜 게시글도 많아
+        # href 형태만으로 메뉴/버튼과 구분할 수 없다 (그래서 필터링하지
+        # 않는다) — 절대/루트상대 링크가 아니면 목록 페이지 URL로 대체.
         href = link_el.get("href","")
         full_link = (href if href.startswith("http")
                      else f"https://{url.split('/')[2]}{href}" if href.startswith("/")
