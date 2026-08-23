@@ -835,12 +835,61 @@ def scrape_partner_orgs(existing_data):
 
     return results
 
+# 사업명 유사매칭용 불용어 — 정책명/게시글 제목 어디에나 흔히 등장해서
+# 키워드로 쓰면 진짜 주제가 아니라 이 단어들끼리만 겹쳐도 유사도가 뻥튀기된다.
+_PLAN_KEYWORD_STOPWORDS = {
+    "사업","운영","지원","지원사업","제공","추진","계획","실시","시행",
+    "조성","관리","운영관리","서비스","프로그램","프로젝트","등","및",
+    "관련","기타","활성화","강화","확대","구축","마련","운영비","지원금",
+    "위한","통한","대상","신청","모집","공고","안내","센터","제도",
+}
+
+_PLAN_STOPWORD_RE = re.compile(
+    "|".join(re.escape(w) for w in sorted(_PLAN_KEYWORD_STOPWORDS, key=len, reverse=True))
+)
+
+def _plan_core_bigrams(name):
+    """사업명/제목에서 흔한 관용어를 뺀 뒤 2글자 단위로 쪼갠 집합을 만든다.
+    한국어 정책명은 "청년인문교실"처럼 띄어쓰기 없는 복합어가 많아 공백
+    기준으로 나누면 사실상 "완전 일치 아니면 0%"가 되어 버린다. 문자
+    2-gram 겹침을 쓰면 "청년 인문학 교실"처럼 띄어쓰기/표현이 달라도
+    핵심 부분이 겹치면 유사도로 잡아낼 수 있다."""
+    if not name:
+        return set()
+    core = re.sub(r'[\s·・\-/(),]+', '', name)
+    core = _PLAN_STOPWORD_RE.sub('', core)
+    return {core[i:i+2] for i in range(len(core) - 1)} if len(core) >= 2 else set()
+
+def _plan_match_confidence(사업명, title):
+    """게시글 제목 하나를 사업명과 비교해 (신뢰도, 겹침비율)을 반환.
+    신뢰도는 "높음"(문자 그대로 8자 이상 겹침, 호출부에서 우선 처리),
+    "중간"(핵심 2-gram 60%+ 겹침 & '청년' 명시), "낮음"('청년'만 명시),
+    또는 None(둘 다 아님)."""
+    kw_bigrams = _plan_core_bigrams(사업명)
+    if not kw_bigrams:
+        return None, 0.0
+    title_core = re.sub(r'[\s·・\-/(),]+', '', title)
+    hits = sum(1 for bg in kw_bigrams if bg in title_core)
+    overlap = hits / len(kw_bigrams)
+    youth = "청년" in title
+    if overlap >= 0.6 and youth:
+        return "중간", overlap
+    if youth:
+        return "낮음", overlap
+    return None, overlap
+
 # ── 중앙정부/경기 시행계획 출처 재검증 (partner_sites.json URL 매칭) ─
 # "2026중앙정부시행계획"/"2026경기시행계획" 레코드는 엑셀에서 그대로 반영된
 # 정적 데이터라 모집시기 텍스트만으로는 상태가 절대 바뀌지 않는다. 매핑된
 # 기관 URL을 열어 사업명과 비슷한 제목의 게시글이 실제로 있는지 확인해서만
 # "모집중"으로 갱신한다 — 못 찾았다고 "마감"으로 단정하면 게시판 구조가
 # 안 맞아 오탐(정책 누락)이 날 수 있으므로 그 경우는 기존 상태를 유지한다.
+#
+# 신뢰도 3단계:
+#   높음 — 사업명과 제목이 문자 그대로 8자 이상 겹침 → 모집상태 확정 갱신
+#   중간 — 핵심 키워드 60%+ 겹침 + 제목에 "청년" 명시 → 사람 확인 전제로
+#          "모집중(자동추정-확인필요)"로만 표시 (확정 갱신 아님)
+#   낮음 — "청년"만 있고 키워드 겹침은 낮음 → 상태를 바꾸지 않음(정보용 로그만)
 def verify_plan_orgs(existing):
     if not BS4_OK:
         print("  beautifulsoup4 없어 시행계획 재검증 스킵")
@@ -868,7 +917,8 @@ def verify_plan_orgs(existing):
     print(f"  재검증 대상: {len(targets)}건 ({len({d['운영기관'] for d in targets})}개 기관)")
 
     titles_cache = {}
-    confirmed = 0
+    n_high, n_mid, n_low = 0, 0, 0
+    by_source = {}
     for d in targets:
         기관명 = d.get("운영기관")
         if 기관명 not in titles_cache:
@@ -880,14 +930,42 @@ def verify_plan_orgs(existing):
             time.sleep(0.3)
 
         사업명 = d.get("사업명","")
-        match = next((t for t, link in titles_cache[기관명]
-                      if 사업명[:8] in t or t[:8] in 사업명), None)
-        if match:
-            d["모집상태"] = "모집중"
-            confirmed += 1
-            print(f"  ✅ [{기관명}] {사업명[:20]} → 모집중 확인")
+        titles = [t for t, link in titles_cache[기관명]]
+        src = d.get("출처","")
+        stat = by_source.setdefault(src, {"높음":0,"중간":0,"낮음":0})
 
-    print(f"  시행계획 재검증: {confirmed}/{len(targets)}건 모집중 확인")
+        # 1) 신뢰도 "높음" — 문자 그대로 8자 이상 겹침 (기존 로직)
+        exact = next((t for t in titles if 사업명[:8] in t or t[:8] in 사업명), None)
+        if exact:
+            d["모집상태"] = "모집중"
+            n_high += 1
+            stat["높음"] += 1
+            print(f"  ✅[높음] [{기관명}] {사업명[:20]} → 모집중 확인")
+            continue
+
+        # 2) 신뢰도 "중간"/"낮음" — 핵심 키워드 겹침 + '청년' 명시 여부로 유사매칭
+        best_level, best_overlap, best_title = None, 0.0, None
+        for t in titles:
+            level, overlap = _plan_match_confidence(사업명, t)
+            if level == "중간" and (best_level != "중간" or overlap > best_overlap):
+                best_level, best_overlap, best_title = level, overlap, t
+            elif level == "낮음" and best_level is None:
+                best_level, best_overlap, best_title = level, overlap, t
+
+        if best_level == "중간":
+            d["모집상태"] = "모집중(자동추정-확인필요)"
+            n_mid += 1
+            stat["중간"] += 1
+            print(f"  🟡[중간] [{기관명}] {사업명[:20]} ~ \"{best_title[:25]}\" (겹침 {best_overlap:.0%})")
+        elif best_level == "낮음":
+            n_low += 1
+            stat["낮음"] += 1
+            # 상태는 바꾸지 않음 — 정보용 로그만
+            print(f"  ⚪[낮음] [{기관명}] {사업명[:20]} (청년 언급만 확인, 상태 유지)")
+
+    print(f"  시행계획 재검증: 높음 {n_high} / 중간(확인필요) {n_mid} / 낮음(유지) {n_low} / 총 {len(targets)}건")
+    for src, stat in by_source.items():
+        print(f"    {src}: 높음 {stat['높음']} / 중간 {stat['중간']} / 낮음 {stat['낮음']}")
     return existing
 
 # ── 네이버 뉴스 RSS ──────────────────────────────────────────
