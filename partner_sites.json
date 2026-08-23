@@ -509,7 +509,7 @@
   {
     "기관명": "교육부",
     "시군": "",
-    "url": "https://www.moe.go.kr/boardCnts/list.do?boardID=294&m=020402&s=moe",
+    "url": "https://www.moe.go.kr/boardCnts/listRenew.do?boardID=72761&m=020502&s=moe",
     "source": "기본안내,중앙정부시행계획",
     "status": "확인됨"
   },
@@ -537,14 +537,14 @@
   {
     "기관명": "문체부",
     "시군": "",
-    "url": "https://www.mcst.go.kr/site/s_notice/press/pressList.jsp",
+    "url": "https://www.mcst.go.kr/site/s_culture/cultureSp/cultureSpList.jsp",
     "source": "기본안내,중앙정부시행계획",
     "status": "확인됨"
   },
   {
     "기관명": "중소벤처기업부",
     "시군": "",
-    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=86",
+    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=310",
     "source": "기본안내,중앙정부시행계획",
     "status": "확인됨"
   },
@@ -553,14 +553,14 @@
     "시군": "중앙/경기도",
     "url": "https://www.pipc.go.kr/np/cop/bbs/selectBoardList.do?bbsId=BS074&mCode=C020010000",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "경찰청",
     "시군": "중앙/경기도",
     "url": "https://www.police.go.kr/user/bbs/BD_selectBbsList.do?q_bbsCode=1002",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "과학기술 정보통신부",
@@ -574,12 +574,12 @@
     "시군": "중앙/경기도",
     "url": "https://www.customs.go.kr/kcs/na/ntt/selectNttList.do?bbsId=1362&mi=2891",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "교육부·과기부",
     "시군": "중앙/경기도",
-    "url": "https://www.moe.go.kr/boardCnts/list.do?boardID=294&m=020402&s=moe",
+    "url": "https://www.moe.go.kr/boardCnts/listRenew.do?boardID=72761&m=020502&s=moe",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -588,12 +588,12 @@
     "시군": "중앙/경기도",
     "url": "https://www.mpva.go.kr/mpva/selectBbsNttList.do?bbsNo=16&key=77",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "국가유산청",
     "시군": "중앙/경기도",
-    "url": "https://www.cha.go.kr/newsBbz/selectNewsBbzList.do?sectionId=b_sec_1&mn=NS_01_02",
+    "url": "https://www.cha.go.kr/multiBbz/selectMultiBbzList.do?bbzId=newpublic&mn=NS_01_01",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -602,21 +602,21 @@
     "시군": "중앙/경기도",
     "url": "https://www.acrc.go.kr/menu.es?mid=a10402010000",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "국방부",
     "시군": "중앙/경기도",
     "url": "https://www.mnd.go.kr/mnd/167/subview.do",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "국세청",
     "시군": "중앙/경기도",
     "url": "https://www.nts.go.kr/nts/na/ntt/selectNttList.do?mi=2201&bbsId=1028",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "국조실",
@@ -630,26 +630,26 @@
     "시군": "중앙/경기도",
     "url": "https://www.kma.go.kr/kma/news/press.jsp",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "기후에너지 환경부",
     "시군": "중앙/경기도",
-    "url": "https://mcee.go.kr/home/web/index.do?menuId=10598",
+    "url": "https://mcee.go.kr/home/web/board/list.do?boardMasterId=39&menuId=10524",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
   {
     "기관명": "농림축산식품부",
     "시군": "중앙/경기도",
-    "url": "https://www.mafra.go.kr/home/5109/subview.do",
+    "url": "https://www.mafra.go.kr/home/5108/subview.do",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
   {
     "기관명": "농식품부",
     "시군": "중앙/경기도",
-    "url": "https://www.mafra.go.kr/home/5109/subview.do",
+    "url": "https://www.mafra.go.kr/home/5108/subview.do",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -663,7 +663,7 @@
   {
     "기관명": "문화체육관광부",
     "시군": "중앙/경기도",
-    "url": "https://www.mcst.go.kr/site/s_notice/press/pressList.jsp",
+    "url": "https://www.mcst.go.kr/site/s_culture/cultureSp/cultureSpList.jsp",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -672,7 +672,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.kmcc.go.kr/user.do?boardId=1113&page=A05030000&dc=K05030000",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "방위사업청",
@@ -684,7 +684,7 @@
   {
     "기관명": "법무부",
     "시군": "중앙/경기도",
-    "url": "https://www.moj.go.kr/moj/221/subview.do",
+    "url": "https://www.moj.go.kr/moj/225/subview.do",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -700,7 +700,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.mma.go.kr/board/boardList.do?mc=mma0000392&gesipan_id=15",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "보건복지부",
@@ -756,7 +756,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.nfa.go.kr/nfa/news/pressrelease/press/",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "식약처",
@@ -770,7 +770,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.mofa.go.kr/www/brd/m_4080/list.do",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "우주항공청",
@@ -791,7 +791,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.mpm.go.kr/mpm/comm/newsPress/",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "재외동포청",
@@ -817,14 +817,14 @@
   {
     "기관명": "중기부",
     "시군": "중앙/경기도",
-    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=86",
+    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=310",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
   {
     "기관명": "지식재산처",
     "시군": "중앙/경기도",
-    "url": "https://www.kipo.go.kr/ko/kpoBultnMgmt.do?menuCd=SCD0200618&parntMenuCd2=SCD0200052",
+    "url": "https://www.kipo.go.kr/ko/kpoBultnMgmt.do?menuCd=SCD0200610&parntMenuCd2=SCD0200049",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -833,19 +833,19 @@
     "시군": "중앙/경기도",
     "url": "https://www.kdca.go.kr/kdca/2848/subview.do",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "통일부",
     "시군": "중앙/경기도",
-    "url": "https://www.unikorea.go.kr/web/unikorea/bbs/bbs_0000000000000004",
+    "url": "https://www.unikorea.go.kr/web/unikorea/bbs/bbs_0000000000000001",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
   {
     "기관명": "해양경찰청",
     "시군": "중앙/경기도",
-    "url": "https://www.kcg.go.kr/kcg/na/ntt/selectNttList.do?mi=2799&bbsId=313",
+    "url": "https://www.kcg.go.kr/kcg/na/ntt/selectNttList.do?mi=2798&bbsId=312",
     "source": "중앙정부시행계획",
     "status": "확인됨"
   },
@@ -854,7 +854,7 @@
     "시군": "중앙/경기도",
     "url": "https://www.mof.go.kr/doc/ko/selectDocList.do?menuSeq=971&bbsSeq=10",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "행정안전부",
@@ -868,7 +868,7 @@
     "시군": "중앙/경기도",
     "url": "https://naacc.go.kr/WEB/contents/N3050100000.do",
     "source": "중앙정부시행계획",
-    "status": "확인됨"
+    "status": "확인필요"
   },
   {
     "기관명": "강원",
