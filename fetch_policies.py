@@ -710,6 +710,32 @@ def scrape_myhome():
 # 범용 크롤링이 통하는 곳만 골라 partner_sites.json에 정리해뒀다.
 # (온통청년/경기청년포털/경기도일자리재단처럼 이미 전용 경로로 수집 중인
 # 곳은 중복이라 제외)
+def _fetch_org_titles(url):
+    """기관 게시판 URL을 열어 (제목, 링크) 목록을 반환. 실패 시 빈 리스트."""
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=10)
+    except requests.exceptions.SSLError:
+        r = requests.get(url, headers=HEADERS, timeout=10, verify=False)
+    r.encoding = r.apparent_encoding or "utf-8"
+    soup = BeautifulSoup(r.text, "html.parser")
+    rows = []
+    for sel in [".bdList li","table tr",".board-list tr",".list-item","li"]:
+        rows = soup.select(sel)
+        if len(rows) > 2: break
+
+    titles = []
+    for row in rows:
+        link_el = row.select_one("a")
+        if not link_el: continue
+        title = link_el.get_text(strip=True)
+        if not title or len(title) < 6: continue
+        href = link_el.get("href","")
+        full_link = (href if href.startswith("http")
+                     else f"https://{url.split('/')[2]}{href}" if href.startswith("/")
+                     else url)
+        titles.append((title, full_link))
+    return titles
+
 def scrape_partner_orgs(existing_data):
     if not BS4_OK:
         print("  beautifulsoup4 없어 유관기관 크롤링 스킵")
@@ -738,28 +764,9 @@ def scrape_partner_orgs(existing_data):
         기관명 = site.get("기관명", "")
         url = site["url"]
         try:
-            try:
-                r = requests.get(url, headers=HEADERS, timeout=10)
-            except requests.exceptions.SSLError:
-                r = requests.get(url, headers=HEADERS, timeout=10, verify=False)
-            r.encoding = r.apparent_encoding or "utf-8"
-            soup = BeautifulSoup(r.text, "html.parser")
-            rows = []
-            for sel in [".bdList li","table tr",".board-list tr",".list-item","li"]:
-                rows = soup.select(sel)
-                if len(rows) > 2: break
-
-            for row in rows:
-                link_el = row.select_one("a")
-                if not link_el: continue
-                title = link_el.get_text(strip=True)
-                if not title or len(title) < 6: continue
+            for title, full_link in _fetch_org_titles(url):
                 if not any(kw in title for kw in YOUTH_KW): continue
                 if any(sfx in title for sfx in NAV_SUFFIX): continue
-                href = link_el.get("href","")
-                full_link = (href if href.startswith("http")
-                             else f"https://{url.split('/')[2]}{href}" if href.startswith("/")
-                             else url)
                 if full_link in existing_links: continue
                 if any(title[:8] in name for name in existing_names if len(name) > 4):
                     continue
@@ -787,6 +794,61 @@ def scrape_partner_orgs(existing_data):
         print(f"  🆕 [{c['운영기관']}] {c['사업명'][:30]}")
 
     return results
+
+# ── 중앙정부/경기 시행계획 출처 재검증 (partner_sites.json URL 매칭) ─
+# "2026중앙정부시행계획"/"2026경기시행계획" 레코드는 엑셀에서 그대로 반영된
+# 정적 데이터라 모집시기 텍스트만으로는 상태가 절대 바뀌지 않는다. 매핑된
+# 기관 URL을 열어 사업명과 비슷한 제목의 게시글이 실제로 있는지 확인해서만
+# "모집중"으로 갱신한다 — 못 찾았다고 "마감"으로 단정하면 게시판 구조가
+# 안 맞아 오탐(정책 누락)이 날 수 있으므로 그 경우는 기존 상태를 유지한다.
+def verify_plan_orgs(existing):
+    if not BS4_OK:
+        print("  beautifulsoup4 없어 시행계획 재검증 스킵")
+        return existing
+
+    try:
+        with open("partner_sites.json", "r", encoding="utf-8-sig") as f:
+            sites = json.load(f)
+    except Exception as e:
+        print(f"  partner_sites.json 읽기 오류: {e}")
+        return existing
+
+    PLAN_SOURCES = {"중앙정부시행계획", "경기시행계획"}
+    org_url = {}
+    for site in sites:
+        src_set = {s.strip() for s in site.get("source","").split(",")}
+        if src_set & PLAN_SOURCES:
+            기관명 = site.get("기관명","")
+            if 기관명:
+                org_url[기관명] = site["url"]
+
+    targets = [d for d in existing
+               if d.get("출처") in ("2026중앙정부시행계획", "2026경기시행계획")
+               and d.get("운영기관") in org_url]
+    print(f"  재검증 대상: {len(targets)}건 ({len({d['운영기관'] for d in targets})}개 기관)")
+
+    titles_cache = {}
+    confirmed = 0
+    for d in targets:
+        기관명 = d.get("운영기관")
+        if 기관명 not in titles_cache:
+            try:
+                titles_cache[기관명] = _fetch_org_titles(org_url[기관명])
+            except Exception as e:
+                print(f"  ⚠️ [{기관명}] {type(e).__name__}")
+                titles_cache[기관명] = []
+            time.sleep(0.3)
+
+        사업명 = d.get("사업명","")
+        match = next((t for t, link in titles_cache[기관명]
+                      if 사업명[:8] in t or t[:8] in 사업명), None)
+        if match:
+            d["모집상태"] = "모집중"
+            confirmed += 1
+            print(f"  ✅ [{기관명}] {사업명[:20]} → 모집중 확인")
+
+    print(f"  시행계획 재검증: {confirmed}/{len(targets)}건 모집중 확인")
+    return existing
 
 # ── 네이버 뉴스 RSS ──────────────────────────────────────────
 def search_naver_news(existing_data):
@@ -874,6 +936,10 @@ def main():
         if new_status == "확인필요":
             check_list.append(d)
         updated.append(d)
+
+    # 중앙정부/경기 시행계획 → partner_sites.json URL로 재검증
+    print("\n시행계획 재검증 (partner_sites.json)...")
+    updated = verify_plan_orgs(updated)
 
     # 확인필요 → API 검색
     print(f"\n확인필요 {len(check_list)}개 API 검색...")
