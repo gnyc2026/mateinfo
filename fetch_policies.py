@@ -968,6 +968,82 @@ def verify_plan_orgs(existing):
         print(f"    {src}: 높음 {stat['높음']} / 중간 {stat['중간']} / 낮음 {stat['낮음']}")
     return existing
 
+# ── 경기 시행계획 출처 재검증 (sites.json 31개 시군 게시판 매칭) ────
+# "2026경기시행계획" 713건은 "시군" 필드가 sites.json의 31개 시군명과
+# 그대로 매칭되지만(경기도 광역 78건 제외), scrape_sigungu는 신규 게시글
+# 발견용이라 기존 레코드의 모집상태를 갱신하지 않는다(add_new 병합은
+# 사업명이 게시글 제목과 완전히 같을 때만 동작). verify_plan_orgs와 같은
+# 3단계 신뢰도 매칭을 시군 단위로 적용해 같은 문제를 해결한다.
+def verify_sigungu_orgs(existing):
+    if not BS4_OK:
+        print("  beautifulsoup4 없어 경기시행계획(시군) 재검증 스킵")
+        return existing
+
+    try:
+        with open("sites.json", "r", encoding="utf-8-sig") as f:
+            sites = json.load(f)
+    except Exception as e:
+        print(f"  sites.json 읽기 오류: {e}")
+        return existing
+
+    city_url = {s.get("city","").strip(): s["url"] for s in sites if s.get("city")}
+
+    targets = [d for d in existing
+               if d.get("출처") == "2026경기시행계획"
+               and d.get("시군") in city_url]
+    print(f"  경기시행계획(시군) 재검증 대상: {len(targets)}건 ({len({d['시군'] for d in targets})}개 시군)")
+
+    titles_cache = {}
+    n_high, n_mid, n_low = 0, 0, 0
+    by_city = {}
+    for d in targets:
+        시군 = d.get("시군")
+        if 시군 not in titles_cache:
+            try:
+                titles_cache[시군] = _fetch_org_titles(city_url[시군])
+            except Exception as e:
+                print(f"  ⚠️ [{시군}] {type(e).__name__}")
+                titles_cache[시군] = []
+            time.sleep(0.3)
+
+        사업명 = d.get("사업명","")
+        titles = [t for t, link in titles_cache[시군]]
+        stat = by_city.setdefault(시군, {"높음":0,"중간":0,"낮음":0})
+
+        # 1) 신뢰도 "높음" — 문자 그대로 8자 이상 겹침
+        exact = next((t for t in titles if 사업명[:8] in t or t[:8] in 사업명), None)
+        if exact:
+            d["모집상태"] = "모집중"
+            n_high += 1
+            stat["높음"] += 1
+            print(f"  ✅[높음] [{시군}] {사업명[:20]} → 모집중 확인")
+            continue
+
+        # 2) 신뢰도 "중간"/"낮음" — 핵심 2-gram 겹침 + '청년' 명시 여부로 유사매칭
+        best_level, best_overlap, best_title = None, 0.0, None
+        for t in titles:
+            level, overlap = _plan_match_confidence(사업명, t)
+            if level == "중간" and (best_level != "중간" or overlap > best_overlap):
+                best_level, best_overlap, best_title = level, overlap, t
+            elif level == "낮음" and best_level is None:
+                best_level, best_overlap, best_title = level, overlap, t
+
+        if best_level == "중간":
+            d["모집상태"] = "모집중(자동추정-확인필요)"
+            n_mid += 1
+            stat["중간"] += 1
+            print(f"  🟡[중간] [{시군}] {사업명[:20]} ~ \"{best_title[:25]}\" (겹침 {best_overlap:.0%})")
+        elif best_level == "낮음":
+            n_low += 1
+            stat["낮음"] += 1
+            # 상태는 바꾸지 않음 — 정보용 로그만
+            print(f"  ⚪[낮음] [{시군}] {사업명[:20]} (청년 언급만 확인, 상태 유지)")
+
+    print(f"  경기시행계획(시군) 재검증: 높음 {n_high} / 중간(확인필요) {n_mid} / 낮음(유지) {n_low} / 총 {len(targets)}건")
+    for city, stat in sorted(by_city.items()):
+        print(f"    {city}: 높음 {stat['높음']} / 중간 {stat['중간']} / 낮음 {stat['낮음']}")
+    return existing
+
 # ── 네이버 뉴스 RSS ──────────────────────────────────────────
 def search_naver_news(existing_data):
     existing_links = {d.get("링크","") for d in existing_data if d.get("링크")}
@@ -1058,6 +1134,10 @@ def main():
     # 중앙정부/경기 시행계획 → partner_sites.json URL로 재검증
     print("\n시행계획 재검증 (partner_sites.json)...")
     updated = verify_plan_orgs(updated)
+
+    # 경기 시행계획 → sites.json 31개 시군 게시판으로 재검증
+    print("\n경기시행계획 재검증 (sites.json 시군 게시판)...")
+    updated = verify_sigungu_orgs(updated)
 
     # 확인필요 → API 검색
     print(f"\n확인필요 {len(check_list)}개 API 검색...")
