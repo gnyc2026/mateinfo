@@ -353,5 +353,649 @@
     "기관명": "남양주 여성새로일하기센터",
     "시군": "남양주시",
     "url": "https://nyjsaeil.com/bbs/board.php?bo_table=0401"
+  },
+  {
+    "기관명": "군포도시공사 개발사업부",
+    "시군": "군포시",
+    "url": "https://www.gunpouc.or.kr",
+    "source": "경기시행계획",
+    "status": "확인됨",
+    "region": "군포시"
+  },
+  {
+    "기관명": "수원시청",
+    "시군": "수원시",
+    "url": "https://www.suwon.go.kr",
+    "source": "경기시행계획",
+    "status": "확인됨",
+    "region": "수원시"
+  },
+  {
+    "기관명": "수원시청년지원센터",
+    "시군": "수원시",
+    "url": "https://swyouth.kr",
+    "source": "경기시행계획",
+    "status": "확인됨",
+    "region": "수원시"
+  },
+  {
+    "기관명": "시흥시청 미래전략담당관",
+    "시군": "시흥시",
+    "url": "https://www.siheung.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "시흥시"
+  },
+  {
+    "기관명": "시흥시청 정책기획과",
+    "시군": "시흥시",
+    "url": "https://www.siheung.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "시흥시"
+  },
+  {
+    "기관명": "시흥시청 주택과",
+    "시군": "시흥시",
+    "url": "https://www.siheung.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "시흥시"
+  },
+  {
+    "기관명": "안양시청 청년정책관",
+    "시군": "안양시",
+    "url": "https://www.anyang.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "안양시"
+  },
+  {
+    "기관명": "여주시청",
+    "시군": "여주시",
+    "url": "https://www.yeoju.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "여주시"
+  },
+  {
+    "기관명": "여주시청(청년활동지원센터)",
+    "시군": "여주시",
+    "url": "https://www.yeoju.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "여주시"
+  },
+  {
+    "기관명": "포천시청 민원과",
+    "시군": "포천시",
+    "url": "https://www.pocheon.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "포천시"
+  },
+  {
+    "기관명": "포천시청 주택과",
+    "시군": "포천시",
+    "url": "https://www.pocheon.go.kr",
+    "source": "경기시행계획",
+    "status": "확인필요",
+    "region": "포천시"
+  },
+  {
+    "기관명": "포천도시공사",
+    "시군": "포천시",
+    "url": "https://www.pcuc.kr/boardList/notice",
+    "source": "경기시행계획,기본안내",
+    "status": "확인됨",
+    "region": "포천시"
+  },
+  {
+    "기관명": "HUG 안심전세포털",
+    "시군": "",
+    "url": "https://www.khug.or.kr/jeonse",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "K-Startup",
+    "시군": "",
+    "url": "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국세청 홈택스",
+    "시군": "",
+    "url": "https://www.nts.go.kr/nts/na/ntt/selectNttList.do?mi=2201&bbsId=1028",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "마이홈/LH",
+    "시군": "",
+    "url": "https://www.myhome.go.kr",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "서민금융진흥원",
+    "시군": "",
+    "url": "https://www.kinfa.or.kr",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "소상공인시장진흥공단",
+    "시군": "",
+    "url": "https://www.semas.or.kr",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "한국장학재단",
+    "시군": "",
+    "url": "https://www.kosaf.go.kr/ko/notice.do",
+    "source": "기본안내",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "과기정통부",
+    "시군": "",
+    "url": "https://msit.go.kr/bbs/list.do?sCode=user&mId=307&mPid=208",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "교육부",
+    "시군": "",
+    "url": "https://www.moe.go.kr/boardCnts/list.do?boardID=294&m=020402&s=moe",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국무조정실",
+    "시군": "",
+    "url": "https://www.opm.go.kr/opm/news/press1.do",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국토교통부",
+    "시군": "",
+    "url": "https://www.molit.go.kr",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인필요"
+  },
+  {
+    "기관명": "금융위원회",
+    "시군": "",
+    "url": "https://www.fsc.go.kr/no010101",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "문체부",
+    "시군": "",
+    "url": "https://www.mcst.go.kr/site/s_notice/press/pressList.jsp",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "중소벤처기업부",
+    "시군": "",
+    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=86",
+    "source": "기본안내,중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "개인정보 보호위원회",
+    "시군": "중앙/경기도",
+    "url": "https://www.pipc.go.kr/np/cop/bbs/selectBoardList.do?bbsId=BS074&mCode=C020010000",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "경찰청",
+    "시군": "중앙/경기도",
+    "url": "https://www.police.go.kr/user/bbs/BD_selectBbsList.do?q_bbsCode=1002",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "과학기술 정보통신부",
+    "시군": "중앙/경기도",
+    "url": "https://msit.go.kr/bbs/list.do?sCode=user&mId=307&mPid=208",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "관세청",
+    "시군": "중앙/경기도",
+    "url": "https://www.customs.go.kr/kcs/na/ntt/selectNttList.do?bbsId=1362&mi=2891",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "교육부·과기부",
+    "시군": "중앙/경기도",
+    "url": "https://www.moe.go.kr/boardCnts/list.do?boardID=294&m=020402&s=moe",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국가보훈부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mpva.go.kr/mpva/selectBbsNttList.do?bbsNo=16&key=77",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국가유산청",
+    "시군": "중앙/경기도",
+    "url": "https://www.cha.go.kr/newsBbz/selectNewsBbzList.do?sectionId=b_sec_1&mn=NS_01_02",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국민권익위원회",
+    "시군": "중앙/경기도",
+    "url": "https://www.acrc.go.kr/menu.es?mid=a10402010000",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국방부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mnd.go.kr/mnd/167/subview.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국세청",
+    "시군": "중앙/경기도",
+    "url": "https://www.nts.go.kr/nts/na/ntt/selectNttList.do?mi=2201&bbsId=1028",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "국조실",
+    "시군": "중앙/경기도",
+    "url": "https://www.opm.go.kr/opm/news/press1.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "기상청",
+    "시군": "중앙/경기도",
+    "url": "https://www.kma.go.kr/kma/news/press.jsp",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "기후에너지 환경부",
+    "시군": "중앙/경기도",
+    "url": "https://mcee.go.kr/home/web/index.do?menuId=10598",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "농림축산식품부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mafra.go.kr/home/5109/subview.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "농식품부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mafra.go.kr/home/5109/subview.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "농촌진흥청",
+    "시군": "중앙/경기도",
+    "url": "https://www.rda.go.kr/board/board.do?mode=list&prgId=day_farmprmninfoEntry",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "문화체육관광부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mcst.go.kr/site/s_notice/press/pressList.jsp",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "방송미디어 통신위원회",
+    "시군": "중앙/경기도",
+    "url": "https://www.kmcc.go.kr/user.do?boardId=1113&page=A05030000&dc=K05030000",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "방위사업청",
+    "시군": "중앙/경기도",
+    "url": "https://www.dapa.go.kr/dapa/doc/selectDocList.do?bbsSeq=528",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "법무부",
+    "시군": "중앙/경기도",
+    "url": "https://www.moj.go.kr/moj/221/subview.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "법제처",
+    "시군": "중앙/경기도",
+    "url": "https://www.moleg.go.kr/board.es?mid=a10501000000&bid=0048",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "병무청",
+    "시군": "중앙/경기도",
+    "url": "https://www.mma.go.kr/board/boardList.do?mc=mma0000392&gesipan_id=15",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "보건복지부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mohw.go.kr/board.es?mid=a10503010100&bid=0027",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "복지부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mohw.go.kr/board.es?mid=a10503010100&bid=0027",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "산림청",
+    "시군": "중앙/경기도",
+    "url": "https://forest.go.kr/kfsweb/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_1036&mn=NKFS_04_02_01",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "산업부",
+    "시군": "중앙/경기도",
+    "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "산업통상부",
+    "시군": "중앙/경기도",
+    "url": "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "새만금개발청",
+    "시군": "중앙/경기도",
+    "url": "https://www.saemangeum.go.kr/sda/brd/list.do?key=2009075579016",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "성평등가족부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mogef.go.kr/nw/rpd/nw_rpd_s001.do?mid=news405",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "소방청",
+    "시군": "중앙/경기도",
+    "url": "https://www.nfa.go.kr/nfa/news/pressrelease/press/",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "식약처",
+    "시군": "중앙/경기도",
+    "url": "https://www.mfds.go.kr/brd/m_99/list.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "외교부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mofa.go.kr/www/brd/m_4080/list.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "우주항공청",
+    "시군": "중앙/경기도",
+    "url": "https://www.kasa.go.kr/bbs/BBSMSTR_000000000016/list.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "원자력안전 위원회",
+    "시군": "중앙/경기도",
+    "url": "https://www.nssc.go.kr/ko/cms/FR_CON/index.do?MENU_ID=190",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "인사혁신처",
+    "시군": "중앙/경기도",
+    "url": "https://www.mpm.go.kr/mpm/comm/newsPress/",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "재외동포청",
+    "시군": "중앙/경기도",
+    "url": "https://oka.go.kr/oka/news/press/",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "재정경제부",
+    "시군": "중앙/경기도",
+    "url": "https://mofe.go.kr/nw/nes/nesdta.do?bbsId=MOSFBBS_000000000028&menuNo=4010100",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "조달청",
+    "시군": "중앙/경기도",
+    "url": "https://www.pps.go.kr/kor/bbs/list.do?key=00641",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "중기부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=86",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "지식재산처",
+    "시군": "중앙/경기도",
+    "url": "https://www.kipo.go.kr/ko/kpoBultnMgmt.do?menuCd=SCD0200618&parntMenuCd2=SCD0200052",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "질병관리청",
+    "시군": "중앙/경기도",
+    "url": "https://www.kdca.go.kr/kdca/2848/subview.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "통일부",
+    "시군": "중앙/경기도",
+    "url": "https://www.unikorea.go.kr/web/unikorea/bbs/bbs_0000000000000004",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "해양경찰청",
+    "시군": "중앙/경기도",
+    "url": "https://www.kcg.go.kr/kcg/na/ntt/selectNttList.do?mi=2799&bbsId=313",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "해양수산부",
+    "시군": "중앙/경기도",
+    "url": "https://www.mof.go.kr/doc/ko/selectDocList.do?menuSeq=971&bbsSeq=10",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "행정안전부",
+    "시군": "중앙/경기도",
+    "url": "http://mois.go.kr/frt/bbs/type010/commonSelectBoardList.do?bbsId=BBSMSTR_000000000008",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "행정중심복합 도시건설청",
+    "시군": "중앙/경기도",
+    "url": "https://naacc.go.kr/WEB/contents/N3050100000.do",
+    "source": "중앙정부시행계획",
+    "status": "확인됨"
+  },
+  {
+    "기관명": "강원",
+    "시군": "강원",
+    "url": "https://job.gwd.go.kr/youth/communication_counseling/notice",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "강원"
+  },
+  {
+    "기관명": "경남",
+    "시군": "경남",
+    "url": "https://youth.gyeongnam.go.kr/youth/menu.es?mid=a10501010000",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "경남"
+  },
+  {
+    "기관명": "경북",
+    "시군": "경북",
+    "url": "https://gbyouth.go.kr/policy/list.tc?mn=2379",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "경북"
+  },
+  {
+    "기관명": "광주",
+    "시군": "광주",
+    "url": "https://youth.gwangju.go.kr/www/52",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "광주"
+  },
+  {
+    "기관명": "대구",
+    "시군": "대구",
+    "url": "http://www.dgyouth.kr/board/notice.asp?pmode=VIEW&num=2047",
+    "source": "지역시행계획",
+    "status": "확인필요",
+    "region": "대구"
+  },
+  {
+    "기관명": "대전",
+    "시군": "대전",
+    "url": "https://www.daejeonyouthportal.kr/board/BBSMSTR_000000000239/articleList.do?commonMenuNo=506_424",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "대전"
+  },
+  {
+    "기관명": "부산",
+    "시군": "부산",
+    "url": "https://young.busan.go.kr/article/list.nm?menuCd=153",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "부산"
+  },
+  {
+    "기관명": "서울",
+    "시군": "서울",
+    "url": "https://youth.seoul.go.kr/bbs/list.do?key=2303300002&sc_bbsCtgrySn=2304110001",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "서울"
+  },
+  {
+    "기관명": "세종",
+    "시군": "세종",
+    "url": "https://www.4242.or.kr/sub0506",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "세종"
+  },
+  {
+    "기관명": "울산",
+    "시군": "울산",
+    "url": "https://www.ulsan.go.kr/s/ulsanyouth/contents.ulsan?mId=008003001000000000",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "울산"
+  },
+  {
+    "기관명": "인천",
+    "시군": "인천",
+    "url": "https://youth.incheon.go.kr/policy/notice.jsp",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "인천"
+  },
+  {
+    "기관명": "전남",
+    "시군": "전남",
+    "url": "https://www.jnyouthcenter.kr/bbs/board.php?bo_table=bbs04_02",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "전남"
+  },
+  {
+    "기관명": "전북",
+    "시군": "전북",
+    "url": "https://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000129&menuCd=DOM_000000102002005000",
+    "source": "지역시행계획",
+    "status": "확인필요",
+    "region": "전북"
+  },
+  {
+    "기관명": "제주",
+    "시군": "제주",
+    "url": "https://jejuyouthdream.com/allyeodeulim/notice",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "제주"
+  },
+  {
+    "기관명": "충남",
+    "시군": "충남",
+    "url": "https://youth.chungnam.go.kr/web/main/bbs/cnyouth_notice/list",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "충남"
+  },
+  {
+    "기관명": "충북",
+    "시군": "충북",
+    "url": "https://www.chungbuk.go.kr/young/selectBbsNttList.do?key=1283&bbsNo=174",
+    "source": "지역시행계획",
+    "status": "확인됨",
+    "region": "충북"
   }
 ]

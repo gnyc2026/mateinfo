@@ -731,6 +731,8 @@ def scrape_partner_orgs(existing_data):
     seen_org_titles = set()
 
     for site in sites:
+        if site.get("source") == "지역시행계획":
+            continue  # 경기 외 16개 시도는 대시보드가 표시할 수단이 없어 크롤링 제외
         시군_raw = site.get("시군", "")
         시군 = "경기도" if 시군_raw == "중앙/경기도" else 시군_raw
         기관명 = site.get("기관명", "")
