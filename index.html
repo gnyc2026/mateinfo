@@ -685,13 +685,16 @@ const GUIDE_FIELDS = ['일자리','주거','교육·직업훈련','금융·복�
 const ORG_LABEL = {'중':'중앙정부','광':'경기도','기':'기초시군'};
 
 function loadGuide() {
+  if (PARTNERS === null) {
+    fetch('partners.json').then(r => r.json()).then(json => { PARTNERS = json; }).catch(() => {});
+  }
   if (GUIDE !== null) return;
   Promise.all([
     fetch('basic_guide.json').then(r => r.json()),
     fetch('policy_cards.json').then(r => r.json())
   ]).then(([guide, pcards]) => {
     GUIDE = guide; PCARDS = pcards;
-    guideState.field = GUIDE_FIELDS[0];
+    guideState.field = '전체';
     renderGuideNav();
     renderSituations();
     renderPcards();
@@ -701,7 +704,7 @@ function loadGuide() {
 }
 
 function renderGuideNav() {
-  document.getElementById('guide-field-nav').innerHTML = GUIDE_FIELDS.map(f =>
+  document.getElementById('guide-field-nav').innerHTML = ['전체', ...GUIDE_FIELDS].map(f =>
     `<div class="chip ${f===guideState.field?'active':''}" onclick="setGuideField('${f}', this)">${f}</div>`
   ).join('');
 }
@@ -728,7 +731,7 @@ const _FC = (f) => (f||'').replace(/[ㆍ·]/g,'').replace(/\s/g,'');
 
 function renderSituations() {
   if (!GUIDE) return;
-  let items = GUIDE.filter(g => g.분야 === guideState.field);
+  let items = guideState.field === '전체' ? GUIDE : GUIDE.filter(g => g.분야 === guideState.field);
   if (guideState.query) {
     const q = guideState.query.toLowerCase();
     items = items.filter(g => g.상황.toLowerCase().includes(q) || g.대표정책.some(p => p.toLowerCase().includes(q)));
@@ -753,7 +756,7 @@ function renderSituations() {
 
 function renderPcards() {
   if (!PCARDS) return;
-  let items = PCARDS.filter(p => p.분야 === guideState.field);
+  let items = guideState.field === '전체' ? PCARDS : PCARDS.filter(p => p.분야 === guideState.field);
   if (guideState.query) {
     const q = guideState.query.toLowerCase();
     items = items.filter(p => p.정책명.toLowerCase().includes(q));
@@ -767,6 +770,20 @@ function renderPcards() {
       <div class="pcard-row"><b>확인처</b> ${p.확인처||'-'}</div>
     </div>`;
   }).join('') || '<div class="empty"><p>해당하는 정책이 없습니다.</p></div>';
+}
+
+// 정책의 "확인처" 텍스트(예: "고용24", "경기청년포털")로 유관기관 목록에서
+// 웹주소를 찾는다. 기관명에 괄호·부가설명이 붙어있을 수 있어 양방향
+// 부분일치로 비교한다.
+function findPartnerUrl(text) {
+  if (!PARTNERS || !text) return null;
+  const clean = text.replace(/[()（）·\s]/g, '');
+  if (!clean) return null;
+  const hit = PARTNERS.find(p => {
+    const name = (p.기관명 || '').replace(/[()（）·\s]/g, '');
+    return name && p.웹주소 && (name.includes(clean) || clean.includes(name));
+  });
+  return hit ? hit.웹주소 : null;
 }
 
 function openPcardModal(idx) {
@@ -785,20 +802,21 @@ function openPcardModal(idx) {
   document.getElementById('btn-prev').style.display = 'none';
   document.getElementById('btn-search').style.display = 'none';
   document.getElementById('btn-copy').style.display = 'none';
-  document.getElementById('btn-pcard-search').style.display = '';
+  currentPcard._partnerUrl = findPartnerUrl(p.확인처);
+  const pcardBtn = document.getElementById('btn-pcard-search');
+  if (currentPcard._partnerUrl) {
+    pcardBtn.textContent = `🔗 ${p.확인처} 바로가기`;
+    pcardBtn.style.display = '';
+  } else {
+    pcardBtn.style.display = 'none';
+  }
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 function searchPcardInPolicyTab() {
-  if (!currentPcard) return;
-  const name = currentPcard.정책명;
-  closeModal();
-  switchTab('policy');
-  document.getElementById('search').value = name;
-  state.query = name;
-  // 상태와 무관하게 검색 결과를 바로 볼 수 있도록 상태 필터를 전체로 초기화
-  setAllStatus(document.getElementById('chip-all-status'));
+  if (!currentPcard || !currentPcard._partnerUrl) return;
+  window.open(currentPcard._partnerUrl, '_blank');
 }
 
 document.getElementById('guide-search').addEventListener('input', e => {
