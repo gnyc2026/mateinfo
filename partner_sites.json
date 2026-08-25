@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "기관명": "중앙청년지원센터",
     "시군": "중앙/경기도",
@@ -997,5 +997,55 @@
     "source": "지역시행계획",
     "status": "확인됨",
     "region": "충북"
+  },
+  {
+    "기관명": "귀어귀촌종합센터",
+    "시군": "중앙/경기도",
+    "url": "https://www.sealife.go.kr/board/notice/list.do"
+  },
+  {
+    "기관명": "소상공인·자영업자 새출발기금",
+    "시군": "중앙/경기도",
+    "url": "https://www.newstartfund.or.kr/Board/List.do"
+  },
+  {
+    "기관명": "안심전세포털",
+    "시군": "중앙/경기도",
+    "url": "https://www.khug.or.kr/jeonse/web/s05/s050101.jsp?mode=L"
+  },
+  {
+    "기관명": "주택도시기금",
+    "시군": "중앙/경기도",
+    "url": "https://nhuf.molit.go.kr/FP/FP08/FP0804/FP080402.jsp?mode=L"
+  },
+  {
+    "기관명": "청약홈",
+    "시군": "중앙/경기도",
+    "url": "https://www.applyhome.co.kr/cu/cua/selectNoticeListView.do"
+  },
+  {
+    "기관명": "근로복지넷",
+    "시군": "중앙/경기도",
+    "url": "https://welfare.comwel.or.kr/board/bbs.do?cfgIdx=1&mCode=G015000000"
+  },
+  {
+    "기관명": "첫일경험포털",
+    "시군": "중앙/경기도",
+    "url": "https://yw.work24.go.kr/g/a/selectAnncList.do"
+  },
+  {
+    "기관명": "한국예술인복지재단",
+    "시군": "중앙/경기도",
+    "url": "https://www.kawf.kr/notice/sub01.do"
+  },
+  {
+    "기관명": "예술인 고용보험",
+    "시군": "중앙/경기도",
+    "url": "https://www.kawf.kr/aei/empNoticeList.do"
+  },
+  {
+    "기관명": "학점은행제",
+    "시군": "중앙/경기도",
+    "url": "https://www.cb.or.kr/creditbank/impartion/nImpartion1_List.do"
   }
 ]
