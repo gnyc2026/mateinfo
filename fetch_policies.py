@@ -732,7 +732,7 @@ def scrape_myhome():
 # 범용 크롤링이 통하는 곳만 골라 partner_sites.json에 정리해뒀다.
 # (온통청년/경기청년포털/경기도일자리재단처럼 이미 전용 경로로 수집 중인
 # 곳은 중복이라 제외)
-def _fetch_org_titles(url):
+def _fetch_org_titles(url, site=None):
     """기관 게시판 URL을 열어 (제목, 링크) 목록을 반환. 실패 시 빈 리스트."""
     try:
         r = requests.get(url, headers=HEADERS, timeout=10)
@@ -743,14 +743,41 @@ def _fetch_org_titles(url):
             # verify=False로도 안 되면 인증서가 아니라 프로토콜/암호화
             # 스위트 협상 자체가 실패하는 것 (구식 서버) → 레거시 세션 재시도
             r = _legacy_session.get(url, headers=HEADERS, timeout=10, verify=False)
+
+    # JS SPA가 내부적으로 호출하는 JSON API를 직접 등록한 경우 (HTML 셀렉터로는
+    # 파싱 불가). partner_sites.json에 json_title_field가 지정돼 있으면 이
+    # 분기로 처리한다. json_list_path는 응답 JSON에서 목록 배열까지의 점(.)
+    # 구분 경로 (예: "list"), json_link_field는 있으면 항목별 링크 필드.
+    if site and site.get("json_title_field"):
+        try:
+            data = r.json()
+        except ValueError:
+            return []
+        items = data
+        for key in (site.get("json_list_path") or "").split("."):
+            if key:
+                items = items.get(key, []) if isinstance(items, dict) else []
+        title_field = site["json_title_field"]
+        link_field = site.get("json_link_field")
+        titles = []
+        for item in items:
+            if not isinstance(item, dict): continue
+            title = str(item.get(title_field) or "").strip()
+            if not title: continue
+            link = str(item.get(link_field) or "") if link_field else ""
+            full_link = link if link.startswith("http") else url
+            titles.append((title, full_link))
+        return titles
+
     r.encoding = r.apparent_encoding or "utf-8"
     soup = BeautifulSoup(r.text, "html.parser")
 
     # 게시판 전용 셀렉터는 문서 전체에서 찾는다 (게시판이 iframe 안에 있거나
     # main/#content 밖에 있는 사이트가 많아, 여기서 범위를 좁히면 오히려
-    # 정상 동작하던 사이트가 깨진다).
+    # 정상 동작하던 사이트가 깨진다). .bbs-list-item처럼 행 자체가 <a>인
+    # 게시판도 있어 rows에 <a>가 직접 걸릴 수 있다.
     rows = []
-    for sel in [".bdList li","table tr",".board-list tr",".list-item"]:
+    for sel in [".bdList li","table tr",".board-list tr",".list-item",".bbs-list-item"]:
         rows = soup.select(sel)
         if len(rows) > 2: break
     else:
@@ -762,7 +789,7 @@ def _fetch_org_titles(url):
 
     titles = []
     for row in rows:
-        link_el = row.select_one("a")
+        link_el = row if row.name == "a" else row.select_one("a")
         if not link_el: continue
         title = link_el.get_text(strip=True)
         if not title or len(title) < 6: continue
@@ -804,7 +831,7 @@ def scrape_partner_orgs(existing_data):
         기관명 = site.get("기관명", "")
         url = site["url"]
         try:
-            for title, full_link in _fetch_org_titles(url):
+            for title, full_link in _fetch_org_titles(url, site):
                 if not any(kw in title for kw in YOUTH_KW): continue
                 if any(sfx in title for sfx in NAV_SUFFIX): continue
                 if full_link in existing_links: continue

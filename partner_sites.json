@@ -1047,5 +1047,39 @@
     "기관명": "학점은행제",
     "시군": "중앙/경기도",
     "url": "https://www.cb.or.kr/creditbank/impartion/nImpartion1_List.do"
+  },
+  {
+    "기관명": "전세사기피해자 지원관리시스템",
+    "시군": "중앙/경기도",
+    "url": "https://jeonse.kgeop.go.kr/ntcnYard/notice.do"
+  },
+  {
+    "기관명": "알리오",
+    "시군": "중앙/경기도",
+    "url": "https://job.alio.go.kr/mobile2021/recruit/recruit.do"
+  },
+  {
+    "기관명": "K-startup",
+    "시군": "중앙/경기도",
+    "url": "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do"
+  },
+  {
+    "기관명": "월드잡플러스",
+    "시군": "중앙/경기도",
+    "url": "https://www.worldjob.or.kr/info/bbs/notice/list.do?menuId=1000006397"
+  },
+  {
+    "기관명": "소상공인365",
+    "시군": "중앙/경기도",
+    "url": "https://bigdata.sbiz.or.kr/pub/api/sprtBiz/getBizList/internal?offset=1&limit=20",
+    "json_list_path": "list",
+    "json_title_field": "bizNm"
+  },
+  {
+    "기관명": "청년농통합플랫폼",
+    "시군": "중앙/경기도",
+    "url": "https://youngfarmer.greendaero.go.kr/svc/yth/news/ythNoticeList.do?bbsId=BBSMSTR_000000000203&page=1&itemsPerPage=20",
+    "json_list_path": "list",
+    "json_title_field": "ttl"
   }
 ]
