@@ -26,6 +26,50 @@ def find_header_row(rows):
 def clean(v):
     return (v or '').strip()
 
+# 중앙/경기도 탭의 "웹 주소" 컬럼이 일반 텍스트가 아니라 구글시트 하이퍼링크로 바뀌어서
+# CSV로는 실제 URL을 못 읽어옴 (보이는 텍스트만 내려옴). 시트 값이 URL 형태가 아닐 때 이 값으로 대체.
+CENTRAL_LINKS = {
+    '온통청년 (고용노동부)': 'https://www.youthcenter.go.kr/',
+    '경기청년포털': 'https://youth.gg.go.kr/gg/index.do',
+    '중앙청년지원센터': 'https://nysc.or.kr/nysc/',
+    '경기도미래세대재단': 'https://www.gfgf.kr',
+    '북부 경기문화창조허브 (콘텐츠/청년창업)': 'https://www.gcon.or.kr/',
+    '경기도경제과학진흥원': 'https://www.gbsa.or.kr/#main',
+    '한국여성벤처협회': 'https://kovwa.or.kr/',
+    '경기도 주거복지센터 (GH)': 'https://www.gh.or.kr/',
+    '고용24': 'https://m.work24.go.kr/cm/main.do',
+    '경기도일자리재단': 'https://www.gjf.or.kr/main/main.do',
+    '경기도 1인가구 포털': 'https://www.gg.go.kr/1ingg/bbs/board.do?bsIdx=873&menuId=4112',
+    '경기도 지역 가족센터 찾기': 'https://gp.familynet.or.kr/web/index.do',
+    '경기도노동권익센터': 'https://labor.gg.go.kr/',
+    '잡아바 어플라이': 'https://apply.jobaba.net/bsns/bsnsListView.do',
+    '경기북부 새일센터': 'https://www.gjf.or.kr/nsaeil/biz/list.do',
+    '소상공인365': 'https://bigdata.sbiz.or.kr',
+    'K-startup': 'https://www.k-startup.go.kr/web',
+    '모두의창업': 'https://www.modoo.or.kr/',
+    '스타트업 원스톱 지원센터': 'https://www.k-startup.go.kr/onestop',
+    '청년농통합플랫폼': 'https://youngfarmer.greendaero.go.kr/',
+    '귀어귀촌종합센터': 'https://www.sealife.go.kr/',
+    '소상공인·자영업자 새출발기금': 'https://새출발기금.kr/',
+    '희망리턴패키지': 'https://www.sbiz.or.kr/nhrp/main.do',
+    '전세사기피해자 지원관리시스템': 'https://jeonse.kgeop.go.kr/',
+    '안심전세포털': 'https://www.khug.or.kr/jeonse/index_jeonse.jsp',
+    '알리오': 'https://job.alio.go.kr/main.do',
+    '근로복지넷': 'https://welfare.comwel.or.kr/default/page.do?mCode=B020010000',
+    '월드잡플러스': 'https://www.worldjob.or.kr/',
+    '국제기구인사센터': 'https://unrecruit.mofa.go.kr/',
+    '첫일경험포털': 'https://yw.work24.go.kr/main.do',
+    '서민금융진흥원': 'https://www.kinfa.or.kr/main.do',
+    '신용회복위원회': 'https://ccrs.or.kr/index.do',
+    '복지로': 'https://www.bokjiro.go.kr',
+    '한국예술인복지재단': 'https://www.kawf.kr/',
+    '예술인 산재보험': 'https://wci.kawf.kr/Main.do',
+    '예술인 고용보험': 'https://www.kawf.kr/aei/artMain.do',
+    '청년문화예술패스': 'https://youthculturepass.or.kr/introPage/intro.html',
+    '학점은행제': 'https://www.cb.or.kr/creditbank/eduIntro/nEduIntro1_1_1.do',
+    'K-MOOC': 'https://www.kmooc.kr/',
+}
+
 def build_partners():
     partners = []
     for tab in PARTNER_TABS:
@@ -44,7 +88,9 @@ def build_partners():
                 return clean(row[i]) if i is not None and i < len(row) else ''
 
             name = get('기관명')
-            url = get('웹 주소')
+            url = get('웹 주소') or get('웹 주소 (게시판 웹주소)')
+            if 시군 == '중앙/경기도' and not url.startswith('http'):
+                url = CENTRAL_LINKS.get(name, '')
             구분 = get('구분')
             카테고리 = get('카테고리')
             담당자 = get('담당자')
