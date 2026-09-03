@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "기관명": "중앙청년지원센터",
     "시군": "중앙/경기도",
@@ -1081,5 +1081,15 @@
     "url": "https://youngfarmer.greendaero.go.kr/svc/yth/news/ythNoticeList.do?bbsId=BBSMSTR_000000000203&page=1&itemsPerPage=20",
     "json_list_path": "list",
     "json_title_field": "ttl"
+  },
+  {
+    "기관명": "주택도시기금_주택전세자금대출 안내",
+    "시군": "중앙/경기도",
+    "url": "https://nhuf.molit.go.kr/FP/FP05/FP0502/FP05020701.jsp"
+  },
+  {
+    "기관명": "K-MOOC",
+    "시군": "중앙/경기도",
+    "url": "https://www.kmooc.kr/"
   }
 ]

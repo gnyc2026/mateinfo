@@ -92,6 +92,14 @@ LCLSF_MAP = {
     "창업":   "창업",
 }
 
+# 유관기관/시군 게시판 크롤링에서 "청년 관련 게시글"로 인정하는 키워드.
+# 실제 수집(scrape_sigungu/scrape_partner_orgs)과 신규 크롤링 대상 검증
+# (sync_partner_sites.py)이 같은 기준을 써야 "검증은 통과했는데 실제로는
+# 청년 게시글이 없어 매일 허탕치는 기관"이 등록되지 않는다.
+PARTNER_YOUTH_KW = ["청년","청소년지원","청년지원","청년정책","청년취업","청년주거","청년창업"]
+# 게시판이 아니라 메뉴/소개 링크인데 우연히 잡히는 것들 (실제 공고가 아님)
+PARTNER_NAV_SUFFIX = ["소개","안내서","안내","연계망","바로가기","페이지","주요 사이트","알림","사이트","(새 창)","새 창)"]
+
 GYEONGGI_CITIES = [
     "수원","성남","의정부","안양","부천","광명","평택","동두천","안산",
     "고양","과천","구리","남양주","오산","시흥","군포","의왕","하남",
@@ -622,7 +630,7 @@ def scrape_sigungu(existing_data):
 
     existing_links = {d.get("링크","") for d in existing_data if d.get("링크")}
     existing_names = {d.get("사업명","") for d in existing_data}
-    YOUTH_KW = ["청년","청소년지원","청년지원","청년정책","청년취업","청년주거","청년창업"]
+    YOUTH_KW = PARTNER_YOUTH_KW
     results = []
 
     for site in sites:
@@ -817,9 +825,8 @@ def scrape_partner_orgs(existing_data):
 
     existing_links = {d.get("링크","") for d in existing_data if d.get("링크")}
     existing_names = {d.get("사업명","") for d in existing_data}
-    YOUTH_KW = ["청년","청소년지원","청년지원","청년정책","청년취업","청년주거","청년창업"]
-    # 게시판이 아니라 메뉴/소개 링크인데 우연히 잡히는 것들 (실제 공고가 아님)
-    NAV_SUFFIX = ["소개","안내서","안내","연계망","바로가기","페이지","주요 사이트","알림","사이트","(새 창)","새 창)"]
+    YOUTH_KW = PARTNER_YOUTH_KW
+    NAV_SUFFIX = PARTNER_NAV_SUFFIX
     candidates = []
     seen_org_titles = set()
 
