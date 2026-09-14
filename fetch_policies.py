@@ -202,10 +202,14 @@ def _is_other_region_local_policy(기관, 사업명):
     return _mentions_other_region(기관) or _mentions_other_region(사업명)
 
 def fetch_api_page(page=1, per_page=100, keyword=""):
+    # pageIndex/display는 이 API가 실제로 받는 파라미터 이름이 아니라서 조용히
+    # 무시되고 항상 pageNum=1·pageSize=10(첫 10건)만 돌려주고 있었다. 그 결과
+    # 이 API로는 사실상 매번 똑같은 10건만 반복 조회되어 전체 2,700여건 중
+    # 대부분(특히 "중앙정부" 분류)이 수집되지 않는 문제가 있었음.
     params = {
-        "apiKeyNm":  API_KEY,
-        "pageIndex": page,
-        "display":   per_page,
+        "apiKeyNm": API_KEY,
+        "pageNum":  page,
+        "pageSize": per_page,
     }
     if keyword:
         params["plcyNm"] = keyword
