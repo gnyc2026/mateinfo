@@ -171,18 +171,26 @@ def get_status(text):
     return "미정"
 
 # ── 온통청년 API (신규 엔드포인트) ──────────────────────────
-# 경기도 우편번호 앞자리 (10000~18999)
-def _is_gyeonggi(zip_str):
-    if not zip_str:
-        return False
-    for z in zip_str.split(","):
-        z = z.strip()
-        if z.isdigit() and 10000 <= int(z) <= 18999:
-            return True
-    return False
+# zipCd는 우편번호가 아니라 법정동코드 앞 2자리 기준 지역코드 리스트
+# (콤마 구분, 전국 배포 정책은 시/군/구별 코드를 수백 개씩 나열함).
+# 예: "경기도 용인시" 기관 사업 zipCd="41461,41463,41465" ← 41이 경기도.
+# 예전 코드는 이걸 "우편번호 10000~18999" 대역으로 잘못 알고 검사해서,
+# 실제 경기도 코드(41xxx)는 전혀 못 잡고 엉뚱하게 서울(11xxx 등)이 섞인
+# 전국단위 정책만 우연히 걸리는 상태였다 (실데이터로 확인: "양평군
+# 상생행복일자리사업"의 zipCd 41830이 이 체크를 통과하지 못했음).
+_GYEONGGI_ZIP_PREFIX = "41"
 
-# 다른 시도 소관 정책이 경기도 우편번호 대역과 우연히 겹쳐 "경기도"로
-# 오분류되는 경우 방지 (예: 전남광주통합특별시 zipCd가 12xxx로 잡히는 사례)
+def _zip_prefix_groups(zip_str):
+    """zipCd 콤마 리스트에서 서로 다른 2자리 지역코드 집합을 반환."""
+    if not zip_str:
+        return set()
+    return {p.strip()[:2] for p in zip_str.split(",") if p.strip()[:2].isdigit()}
+
+def _is_gyeonggi(zip_str):
+    return _GYEONGGI_ZIP_PREFIX in _zip_prefix_groups(zip_str)
+
+# 다른 시도 소관 정책이 우연히 경기도 코드와 함께 섞여 "경기도"로 오분류되는
+# 경우에 대한 보조 필터 (기관명/사업명에 다른 지역명이 명시된 경우)
 _NON_GG_REGION_KW = ['서울','부산','대구','인천','대전','울산','세종',
                      '강원','충북','충청북도','충남','충청남도',
                      '전북','전라북도','전남','전라남도',
@@ -193,13 +201,36 @@ def _mentions_other_region(name):
         return False
     return any(kw in name for kw in _NON_GG_REGION_KW)
 
-# "중앙정부" 배지는 전국 어디서나 신청 가능한 진짜 중앙부처 정책에만 붙인다.
-# 온통청년 API는 경기도가 아니면 전부 "중앙정부"로 뭉뚱그려 놨는데, 실제로는
-# 그 안에 다른 시/도의 지역 한정 정책이 대부분 섞여 있어 경기 청년에게는
-# 의미가 없다. 운영기관명이나 사업명에 다른 지역명이 있으면 특정 지역 한정
-# 정책으로 보고 아예 목록에서 제외한다.
+_BARE_CITY_ORG_RE = re.compile(r'^[가-힣]{1,4}(?:시|군|구)$')
+
+def _is_other_region_bare_city_org(기관):
+    """운영기관명이 "서산시"처럼 지자체명 단독으로만 돼 있는 경우, 경기도
+    31개 시군(GYEONGGI_CITIES) 목록에 없으면 다른 지역 지자체로 확정한다.
+    실데이터 확인 결과 일부 지자체 자체 사업은 zipCd가 (아마 API 쪽 결측
+    처리로) 전국단위 정책과 똑같은 "16개 그룹" 값을 갖고 있어 zipCd 기준
+    판단만으로는 걸러지지 않는다(예: "서산시" 기관의 여러 사업). 기관명이
+    지자체명 단독일 때는 zipCd보다 이 쪽이 더 신뢰할 수 있는 신호다."""
+    if not 기관 or not _BARE_CITY_ORG_RE.match(기관.strip()):
+        return False
+    city = 기관.strip()
+    gg_names = {_with_city_suffix(c) for c in GYEONGGI_CITIES if c != "경기"}
+    return city not in gg_names
+
 def _is_other_region_local_policy(기관, 사업명):
-    return _mentions_other_region(기관) or _mentions_other_region(사업명)
+    return (_mentions_other_region(기관) or _mentions_other_region(사업명)
+            or _is_other_region_bare_city_org(기관))
+
+# "중앙정부" 배지는 전국 어디서나 신청 가능한 진짜 중앙부처 정책에만 붙인다.
+# zipCd에 섞인 서로 다른 지역코드 그룹 수로 판단한다 — 실제 전국단위 정책
+# (청년도약계좌·국민내일배움카드 등)은 지역코드가 16개 그룹씩 섞여 있는
+# 반면, 특정 시/군 전용 정책은 자기 지역 코드 1~2개 그룹뿐이다. 예전엔
+# 기관명/사업명에 "경기" 언급이 없고 다른 지역 키워드 매칭도 안 되면 전부
+# "중앙정부"로 뭉뚱그렸는데, 이 키워드 목록에 없는 시/군(서산·태안·홍성 등)
+# 이 그대로 새어 들어가 "중앙정부"로 잘못 표시되는 문제가 있었다.
+_NATIONWIDE_ZIP_GROUP_THRESHOLD = 5
+
+def _is_nationwide_policy(zip_str):
+    return len(_zip_prefix_groups(zip_str)) >= _NATIONWIDE_ZIP_GROUP_THRESHOLD
 
 def fetch_api_page(page=1, per_page=100, keyword=""):
     # pageIndex/display는 이 API가 실제로 받는 파라미터 이름이 아니라서 조용히
@@ -246,12 +277,16 @@ def parse_api_item(item):
     사업명 = item.get("plcyNm", "")
     zip_str = item.get("zipCd", "")
 
-    if _is_gyeonggi(zip_str) and not _is_other_region_local_policy(기관, 사업명):
-        시군 = "경기도"
-    elif _is_other_region_local_policy(기관, 사업명):
-        return None  # 경기도 청년과 무관한 타 지역 한정 정책 제외
-    else:
+    # 전국단위 정책(청년도약계좌 등)은 zipCd에 경기도(41xxx) 코드도 같이
+    # 포함돼 있어 "경기도" 체크가 먼저면 전부 거기로 흡수돼버린다. 넓은
+    # 지역 커버 여부(전국단위)를 먼저 판별해야 "중앙정부" 배지가 실제로
+    # 채워진다.
+    if _is_nationwide_policy(zip_str) and not _is_other_region_local_policy(기관, 사업명):
         시군 = "중앙정부"
+    elif _is_gyeonggi(zip_str) and not _is_other_region_local_policy(기관, 사업명):
+        시군 = "경기도"
+    else:
+        return None  # 경기도 미포함 + 전국단위도 아닌, 특정 타 지역 전용 정책 제외
 
     return {
         "시군":     시군,
