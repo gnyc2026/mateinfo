@@ -873,7 +873,11 @@ def scrape_partner_orgs(existing_data):
         if site.get("source") == "지역시행계획":
             continue  # 경기 외 16개 시도는 대시보드가 표시할 수단이 없어 크롤링 제외
         시군_raw = site.get("시군", "")
-        시군 = "경기도" if 시군_raw == "중앙/경기도" else 시군_raw
+        # partner_sites.json에서 시군이 비어있는 항목은 "미지정"이 아니라
+        # 과기정통부/K-Startup처럼 특정 시군에 속하지 않는 중앙부처/전국단위
+        # 기관을 뜻한다. 빈 문자열을 그대로 두면 화면에서 지역 뱃지가 비고
+        # 지역순 정렬에서 엉뚱한 자리에 끼어드는 버그가 생긴다.
+        시군 = "경기도" if 시군_raw == "중앙/경기도" else (시군_raw or "중앙정부")
         기관명 = site.get("기관명", "")
         url = site["url"]
         try:

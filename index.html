@@ -1037,7 +1037,7 @@ function getFiltered() {
     items = [...items].sort((a,b) => {
       const cr = CITY_RANK(a.시군) - CITY_RANK(b.시군);
       if (cr !== 0) return cr;
-      return a.시군.localeCompare(b.시군,'ko') || byStatus(a,b);
+      return (a.시군||'').localeCompare(b.시군||'','ko') || byStatus(a,b);
     });
   } else {
     // 분야순 → 같은 분야 내에서는 모집상태순
