@@ -306,23 +306,63 @@ def parse_api_item(item):
     }
 
 # ── 확인필요 항목 키워드 검색 ────────────────────────────────
-def search_active(policy_name):
-    keyword = re.sub(r'[^\w]', ' ', policy_name.replace("경기", "").replace("청년", "")).strip()
-    if len(keyword) < 2:
-        keyword = policy_name
-    result = fetch_api_page(keyword=keyword, per_page=10)
+#
+# 온통청년 API는 전국 정책을 돌려주는데, 예전 검색은 "이름에 핵심단어가
+# 하나라도 들어있고 모집중이면" 첫 결과를 그대로 채택해서 제주·세종·서울
+# 등 다른 지역 정책의 링크/기간/모집중 상태가 경기도 정책에 덮어써졌다
+# (예: "청년월세 지원" → "제주 청년 희망충전 월세 지원"). 그래서
+#  1) 다른 지역 정책은 제외하고,
+#  2) 이름에서 일반어("지원","사업" 등)를 뺀 핵심단어가 모두 들어있을 때만
+#     같은 정책으로 본다.
+_SEARCH_STOPWORDS = {"지원", "지원사업", "사업", "운영", "프로그램", "제공", "확대",
+                     "추진", "신청", "모집", "참여", "시행", "계속"}
+
+def _search_core_words(policy_name):
+    base = re.sub(r'[^\w]', ' ', policy_name.replace("경기", "").replace("청년", ""))
+    return [w for w in base.split() if len(w) >= 2 and w not in _SEARCH_STOPWORDS]
+
+def _region_compatible(시군, item):
+    """검색으로 찾은 온통청년 정책(item)이 이 정책의 시군과 같은 지역권인지 판정.
+    parse_api_item과 같은 기준(법정동코드 41=경기, 5개 그룹 이상=전국단위,
+    기관명/사업명에 타 지역 명시)을 그대로 적용한다."""
+    기관 = item.get("sprvsnInstCdNm", "") or item.get("operInstCdNm", "")
+    사업명 = item.get("plcyNm", "")
+    text = 기관 + " " + 사업명
+    if _is_other_region_local_policy(기관, 사업명) or "광주광역시" in text:
+        return False
+    zip_str = item.get("zipCd", "")
+    nationwide = _is_nationwide_policy(zip_str)
+    gyeonggi = _is_gyeonggi(zip_str)
+    if not nationwide and not gyeonggi:
+        return False                  # 경기 미포함 + 전국단위도 아님 = 타 지역 전용
+    mentioned = {c for c in GYEONGGI_CITIES if c != "경기" and c in text}
+    if 시군 == "중앙정부":
+        return nationwide and not mentioned
+    if 시군 in ("", "경기도"):
+        return True
+    base = 시군[:-1] if 시군.endswith(("시", "군")) else 시군
+    return nationwide or not mentioned or base in mentioned
+
+def search_active(policy_name, 시군=""):
+    core = _search_core_words(policy_name)
+    if not core:
+        return None    # 일반어뿐인 이름은 어떤 정책과도 구분이 안 되므로 매칭하지 않음
+    keyword = " ".join(core)
+    result = fetch_api_page(keyword=keyword, per_page=30)
     if result is None:
         return None
     for item in result.get("youthPolicyList", []):
         name = item.get("plcyNm", "")
-        core = [w for w in keyword.split() if len(w) >= 2]
-        if any(w in name for w in core):
-            bgng = item.get("bizPrdBgngYmd", "").strip()
-            end  = item.get("bizPrdEndYmd", "").strip()
-            시기 = f"{_format_date(bgng)} ~ {_format_date(end)}" if bgng and end else ""
-            if get_status(시기) == "모집중":
-                link = item.get("aplyUrlAddr", "") or item.get("refUrlAddr1", "")
-                return {"link": link, "period": 시기}
+        if not all(w in name for w in core):
+            continue
+        if not _region_compatible(시군, item):
+            continue
+        bgng = item.get("bizPrdBgngYmd", "").strip()
+        end  = item.get("bizPrdEndYmd", "").strip()
+        시기 = f"{_format_date(bgng)} ~ {_format_date(end)}" if bgng and end else ""
+        if get_status(시기) == "모집중":
+            link = item.get("aplyUrlAddr", "") or item.get("refUrlAddr1", "")
+            return {"link": link, "period": 시기}
     return None
 
 # ── 경기도 일자리재단 OpenAPI (JobFndtnSportPolocy) ──────────
@@ -1220,7 +1260,7 @@ def main():
     print(f"\n확인필요 {len(check_list)}개 API 검색...")
     confirmed = 0
     for d in check_list:
-        result = search_active(d.get("사업명",""))
+        result = search_active(d.get("사업명",""), d.get("시군",""))
         if result:
             d["모집상태"] = "모집중"
             d["링크_모집"] = result["link"]
