@@ -1091,5 +1091,10 @@
     "기관명": "K-MOOC",
     "시군": "중앙/경기도",
     "url": "https://www.kmooc.kr/"
+  },
+  {
+    "기관명": "경기도 지역 가족센터 찾기",
+    "시군": "중앙/경기도",
+    "url": "https://gp.familynet.or.kr/web/index.do"
   }
 ]
